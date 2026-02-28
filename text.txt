@@ -1,0 +1,505 @@
+make it now AdminPanel
+You are a senior full-stack software architect and developer.
+
+Build a production-ready scalable system inside this root project:
+
+Get_Job_And_Go
+
+⚠️ IMPORTANT GLOBAL RULES:
+
+Update code ONLY inside Get_Job_And_Go
+
+Do NOT create files outside this root
+
+Follow clean architecture
+
+Use scalable structure
+
+Follow best security practices
+
+Write production-ready code (not demo code)
+
+No pseudo code
+
+Use proper naming conventions
+
+Separate business logic properly
+
+Use environment variables properly
+
+🏗 FINAL PROJECT STRUCTURE
+
+Create EXACTLY this:
+
+Get_Job_And_Go
+│
+├── Frontend              # Student + Company portal
+│   ├── public
+│   └── src
+│       ├── components
+│       ├── pages
+│       ├── layouts
+│       ├── services
+│       ├── hooks
+│       ├── routes
+│       ├── utils
+│       └── App.jsx
+│
+├── AdminPanel            # Admin management system
+│   ├── public
+│   └── src
+│       ├── components
+│       ├── pages
+│       ├── layouts
+│       ├── services
+│       ├── hooks
+│       ├── routes
+│       ├── utils
+│       └── App.jsx
+│
+└── Backend
+    ├── config
+    ├── apps
+    │    ├── authentication
+    │    ├── companies
+    │    ├── jobs
+    │    ├── students
+    │    ├── applications
+    │    └── reports
+    ├── manage.py
+    └── requirements.txt
+🖥 FRONTEND (Students + Companies Portal)
+
+Technology:
+
+React JS (JSX only, NOT TSX)
+
+TailwindCSS v4
+
+Axios
+
+React Router v6
+
+JWT authentication
+
+Responsive UI
+
+Production folder structure
+
+🎯 Features
+Student Side:
+
+Register
+
+Login
+
+Update profile
+
+Upload resume
+
+Browse jobs
+
+Apply to jobs
+
+Track application status
+
+Company Side:
+
+Register (with documents upload)
+
+Login
+
+Post job
+
+Edit/Delete job
+
+View applicants
+
+Filter applications
+
+🛡 ADMIN PANEL
+
+Technology:
+
+React JSX
+
+TailwindCSS v4
+
+JWT authentication
+
+Protected routes
+
+Enterprise dashboard layout
+
+Admin Features:
+
+Login (JWT)
+
+Dashboard analytics
+
+Company verification system
+
+Job monitoring
+
+Application tracking
+
+Reports & charts
+
+Role-based access
+
+Logout with refresh token invalidation
+
+🎨 UI DESIGN REQUIREMENTS (Both Frontend & AdminPanel)
+
+Modern SaaS dashboard look
+
+Sidebar layout
+
+Rounded-xl cards
+
+Soft shadows
+
+Clean typography
+
+Proper spacing
+
+Smooth hover transitions
+
+Dark/light theme ready
+
+Fully responsive
+
+Professional enterprise feel
+
+🗄 BACKEND (Django + DRF + MySQL)
+
+Technology Stack:
+
+Django
+
+Django REST Framework
+
+MySQL
+
+SimpleJWT
+
+Role-based authentication
+
+Clean app separation
+
+Pagination
+
+Filtering
+
+Secure file upload handling
+
+🧠 DATABASE MODELS
+Authentication App
+
+Custom User Model:
+
+email (unique)
+
+password (hashed)
+
+role (admin / company / student / superadmin)
+
+is_active
+
+created_at
+
+Companies App
+
+Company:
+
+user (OneToOne with User)
+
+company_name
+
+email
+
+phone
+
+company_type
+
+GST_number
+
+CIN_number
+
+verification_status (Pending / Verified / Rejected)
+
+incorporation_certificate
+
+PAN_document
+
+founder_id_proof
+
+registration_proof
+
+admin_remarks
+
+created_at
+
+Prevent duplicate registration by email/GST/CIN.
+
+Students App
+
+Student:
+
+user (OneToOne)
+
+full_name
+
+phone
+
+resume
+
+skills
+
+created_at
+
+Jobs App
+
+Job:
+
+company (ForeignKey)
+
+title
+
+description
+
+salary
+
+location
+
+is_active
+
+created_at
+
+Applications App
+
+Application:
+
+student (ForeignKey)
+
+job (ForeignKey)
+
+status (Applied / Under Review / Shortlisted / Rejected / Hired)
+
+applied_at
+
+Prevent duplicate applications per job.
+
+📊 ADMIN WORKFLOW
+1️⃣ Admin Login
+
+Email + Password
+
+JWT access + refresh token
+
+Protected routes
+
+2️⃣ Company Verification
+
+Show:
+
+Pending companies
+
+Documents preview
+
+GST & CIN info
+
+If company_type == "Startup":
+Require:
+
+Incorporation Certificate
+
+PAN
+
+Founder ID
+
+Registration proof
+
+Admin can:
+
+Approve
+
+Reject
+
+Add remarks
+
+Create audit log entry.
+
+3️⃣ Job Monitoring
+
+Admin can:
+
+View all jobs
+
+Toggle active/inactive
+
+Delete inappropriate job
+
+4️⃣ Application Tracking
+
+Admin can:
+
+View applications
+
+Filter by status
+
+Update status
+
+Count per job
+
+5️⃣ Dashboard Reports
+
+Cards:
+
+Total Students
+
+Total Companies
+
+Verified Companies
+
+Active Jobs
+
+Total Applications
+
+Charts:
+
+Monthly Company Growth
+
+Monthly Applications Growth
+
+Backend must provide aggregated APIs.
+
+🔐 SECURITY REQUIREMENTS
+
+Password hashing (Django default)
+
+JWT authentication
+
+Role-based permissions
+
+CORS configuration
+
+Input validation
+
+File validation
+
+Secure media handling
+
+Pagination on list APIs
+
+Proper HTTP status codes
+
+Exception handling
+
+Environment variables for secrets
+
+Refresh token rotation
+
+📡 API REQUIREMENTS
+
+Use:
+
+ModelViewSet
+
+Routers
+
+Serializers
+
+Custom permissions
+
+Filters
+
+Pagination
+
+Proper REST conventions
+
+All protected endpoints require JWT.
+
+⚙️ IMPLEMENTATION ORDER (MANDATORY)
+
+Follow this order strictly:
+
+Setup Backend project
+
+Configure MySQL
+
+Create custom User model
+
+Create all apps
+
+Create models
+
+Create serializers
+
+Create permissions
+
+Create ViewSets
+
+Configure routers
+
+Setup JWT
+
+Setup CORS
+
+Setup media handling
+
+Create reporting APIs
+
+Setup Frontend (Student/Company)
+
+Setup AdminPanel
+
+Create Authentication flow
+
+Create Protected Routes
+
+Integrate APIs
+
+Add dashboard charts
+
+Final production optimization
+
+📦 OUTPUT FORMAT REQUIREMENT
+
+For EACH STEP:
+
+Show updated folder structure
+
+Provide FULL code
+
+No pseudo code
+
+No explanation unless necessary
+
+Production-ready formatting
+
+Clean indentation
+
+Proper imports
+
+🎯 FINAL RESULT
+
+System must be:
+
+Fully functional
+
+Scalable
+
+Clean architecture
+
+Secure
+
+Production-ready
+
+Enterprise-level quality
+
+No placeholder logic
+
+No mock data
+
+Real database operations
