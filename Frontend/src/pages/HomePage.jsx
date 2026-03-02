@@ -113,9 +113,18 @@ function HomePage() {
 
           {/* Hero Section */}
           <section className="max-w-6xl mx-auto px-6 md:px-10 lg:px-12 pt-16 md:pt-32 pb-20 text-center">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white border border-slate-100 text-primary-600 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] mb-8 md:mb-12 shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
-              <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
-              Platform in Active Beta
+            <div className="mb-12 md:mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
+              <div className="max-w-3xl mx-auto p-8 rounded-[3rem] bg-white/40 backdrop-blur-sm border border-white shadow-[0_20px_60px_rgba(0,0,0,0.02)] border-t-2 border-t-primary-500/10">
+                <blockquote className="space-y-6">
+                  <p className="text-xl md:text-2xl font-serif font-black text-[#27187E] leading-relaxed italic">
+                    "தெய்வத்தான் ஆகாதெனினும் முயற்சிதன் <br className="hidden md:block" /> மெய்வருத்தக் கூலி தரும்."
+                  </p>
+                  <div className="w-12 h-1 bg-primary-500/20 mx-auto rounded-full" />
+                  <p className="text-[12px] md:text-sm text-slate-500 font-bold leading-relaxed uppercase tracking-widest max-w-xl mx-auto">
+                    ஒரு செயல் தெய்வத்தால் கூட ஆகாது என்று தோன்றினாலும், மனிதன் விடாமுயற்சி செய்தால், அந்த முயற்சி வீணாகாது — அது கண்டிப்பாக உழைப்பிற்கு உரிய பலனைத் தரும்.
+                  </p>
+                </blockquote>
+              </div>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-black leading-[1.1] mb-8 md:mb-10 tracking-tight text-slate-900 animate-in fade-in slide-in-from-bottom-8 duration-1000">
