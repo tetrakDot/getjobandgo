@@ -35,7 +35,9 @@ class StudentViewSet(
     def get_permissions(self):
         if self.action == "create":
             return [permissions.AllowAny()]
-        if self.action in {"list", "retrieve", "download_resume"}:
+        if self.action in {"list", "retrieve"}:
+            return [permissions.AllowAny()]
+        if self.action == "download_resume":
             return [permissions.IsAuthenticated()]
         if self.action in {"destroy", "verify", "reject", "mark_pending"}:
             return [IsAdmin()]
@@ -44,7 +46,7 @@ class StudentViewSet(
     def get_queryset(self):
         user = self.request.user
         if not user.is_authenticated:
-            return Student.objects.none()
+            return self.queryset
         if user.role in {UserRole.ADMIN, UserRole.SUPERADMIN, UserRole.COMPANY}:
             return self.queryset
         if user.role == UserRole.STUDENT:

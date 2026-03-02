@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getStoredTokens } from '../utils/storage';
+import { getStoredTokens, clearStoredTokens } from '../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
 
@@ -18,4 +18,14 @@ apiClient.interceptors.request.use((config) => {
   }
   return config;
 });
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      clearStoredTokens();
+    }
+    return Promise.reject(error);
+  }
+);
 

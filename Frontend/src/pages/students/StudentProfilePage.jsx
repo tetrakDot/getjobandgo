@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { listStudents, updateStudent } from '../../services/studentService';
-import { Loader2, UploadCloud } from 'lucide-react';
+import { Loader2, UploadCloud, CheckCircle2 } from 'lucide-react';
 
 function StudentProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -109,81 +109,88 @@ function StudentProfilePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-slate-50 flex items-center gap-2">
+        <h1 className="text-3xl font-serif font-bold text-slate-900 tracking-tight flex items-center gap-3">
           My Profile
           {formData.verification_status === 'verified' && (
-            <span title="Verified Student" className="text-emerald-500 bg-emerald-500/10 p-1 rounded-full border border-emerald-500/20">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span title="Verified Student" className="text-emerald-500 bg-emerald-50 p-1 rounded-full border border-emerald-100 shadow-sm">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
             </span>
           )}
         </h1>
-        <p className="mt-1 text-xs text-slate-400">
-          Manage your personal information, skills, and resume.
+        <p className="mt-2 text-sm text-slate-500">
+          Manage your personal information, skills, and resume. Keep your profile updated to stand out.
         </p>
       </div>
       
-      <div className="rounded-2xl bg-slate-900/80 border border-slate-800 shadow-sm overflow-hidden">
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+      <div className="rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+        <form onSubmit={handleSubmit} className="p-8 md:p-12 space-y-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
               <input required type="text" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-medium" />
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Phone Number</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
               <input type="text" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-medium" />
             </div>
           </div>
           
-          <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Skills (comma separated)</label>
+          <div className="space-y-2">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Skills (comma separated)</label>
             <input type="text" value={formData.skills} onChange={e => setFormData({ ...formData, skills: e.target.value })} 
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-medium"
               placeholder="e.g. ReactJS, Django, Python" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Country</label>
-              <input type="text" value={formData.country} onChange={e => setFormData({ ...formData, country: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Country</label>
+              <select 
+                value={formData.country} 
+                onChange={e => setFormData({ ...formData, country: e.target.value })} 
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold appearance-none cursor-pointer"
+              >
+                <option value="">Select Country</option>
+                <option value="India">India</option>
+                <option value="USA">USA</option>
+              </select>
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">State</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">State</label>
               <input type="text" value={formData.state} onChange={e => setFormData({ ...formData, state: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-medium" />
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">District</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">District</label>
               <input type="text" value={formData.district} onChange={e => setFormData({ ...formData, district: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-medium" />
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Education</label>
+          <div className="space-y-2">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Education</label>
             <input type="text" value={formData.education} onChange={e => setFormData({ ...formData, education: e.target.value })} 
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-medium"
               placeholder="e.g. B.Tech in Computer Science from XYZ University" />
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">About</label>
-            <textarea rows={4} value={formData.about} onChange={e => setFormData({ ...formData, about: e.target.value })} 
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500"
+          <div className="space-y-2">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">About</label>
+            <textarea rows={5} value={formData.about} onChange={e => setFormData({ ...formData, about: e.target.value })} 
+              className="w-full bg-slate-50 border border-slate-200 rounded-3xl px-6 py-5 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-medium resize-none"
               placeholder="Write a little about yourself..."></textarea>
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-300 mb-2">Resume Upload</label>
-            <div className="flex items-center gap-3">
-              <label className="cursor-pointer flex items-center gap-2 px-4 py-2 border border-slate-700 bg-slate-900 rounded-lg text-sm text-slate-300 hover:text-slate-100 hover:bg-slate-800 transition-colors">
-                <UploadCloud size={16} />
-                <span>Choose File (PDF)</span>
+          <div className="space-y-4">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Resume Upload</label>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+              <label className="cursor-pointer group relative flex items-center justify-center gap-3 px-8 py-4 border-2 border-dashed border-slate-200 bg-slate-50 rounded-2xl text-sm text-slate-500 hover:border-primary-400 hover:bg-primary-50 transition-all">
+                <UploadCloud size={20} className="group-hover:text-primary-500 transition-colors" />
+                <span className="font-bold group-hover:text-primary-600 transition-colors">Choose File (PDF)</span>
                 <input 
                   type="file" 
                   accept=".pdf"
@@ -192,14 +199,27 @@ function StudentProfilePage() {
                   className="hidden"  
                 />
               </label>
-              {resumeFile && <span className="text-xs text-slate-400">{resumeFile.name}</span>}
+              {resumeFile ? (
+                <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-100 animate-in zoom-in-95">
+                    <CheckCircle2 size={14} />
+                    <span className="text-xs font-bold truncate max-w-[200px]">{resumeFile.name}</span>
+                </div>
+              ) : (
+                <p className="text-xs text-slate-400 italic">Max size: 2MB</p>
+              )}
             </div>
           </div>
 
-          {success && <p className="text-xs text-emerald-400">{success}</p>}
-
-          <div className="pt-4 border-t border-slate-800 flex justify-end">
-            <button disabled={saving} type="submit" className="px-5 py-2.5 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm font-medium disabled:opacity-50 transition-colors">
+          <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                {success && (
+                    <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm animate-in slide-in-from-left-4">
+                        <CheckCircle2 size={18} />
+                        {success}
+                    </div>
+                )}
+            </div>
+            <button disabled={saving} type="submit" className="min-w-[220px] px-8 py-5 bg-[#27187E] hover:bg-primary-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-500/10 active:scale-95 disabled:opacity-50 transition-all">
               {saving ? 'Saving...' : 'Save Profile Changes'}
             </button>
           </div>

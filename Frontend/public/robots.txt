@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://getjobandgo.com/sitemap.xml
+Sitemap: https://getjobgo.com/sitemap.xml

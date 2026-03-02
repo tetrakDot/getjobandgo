@@ -8,11 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <AuthProvider>
-      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
-      <Routes>
-        <Route path="/*" element={<AppRoutes />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+      <AppRoutes />
     </AuthProvider>
   );
 }

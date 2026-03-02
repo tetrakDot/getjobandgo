@@ -23,38 +23,36 @@ import NotFoundPage from "../pages/NotFoundPage";
 function AppRoutes() {
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Public Landing (No Sidebar) */}
       <Route path="/" element={<HomePage />} />
-      <Route path="/jobs" element={<JobsListPage />} />
-      <Route path="/jobs/:id" element={<JobDetailPage />} />
-      <Route path="/companies" element={<CompaniesListPage />} />
-      <Route path="/companies/:id" element={<CompanyDetailPage />} />
-      <Route path="/students" element={<StudentsListPage />} />
-      <Route path="/students/:id" element={<StudentDetailPage />} />
 
-      {/* Auth Routes */}
+      {/* Auth Routes (No Sidebar) */}
       <Route element={<AuthLayout />}>
         <Route path="/auth/login" element={<StudentLoginPage />} />
         <Route path="/auth/register" element={<StudentRegisterPage />} />
         <Route path="/auth/company/login" element={<CompanyLoginPage />} />
-        <Route
-          path="/auth/company/register"
-          element={<CompanyRegisterPage />}
-        />
+        <Route path="/auth/company/register" element={<CompanyRegisterPage />} />
       </Route>
 
-      {/* Student Protected */}
-      <Route element={<ProtectedRoute roles={["student"]} />}>
-        <Route element={<DashboardLayout />}>
+      {/* Pages with Global Navigation (Sidebar + Topbar) */}
+      <Route element={<DashboardLayout />}>
+        {/* Public Browse Pages */}
+        <Route path="/jobs" element={<JobsListPage />} />
+        <Route path="/jobs/:id" element={<JobDetailPage />} />
+        <Route path="/companies" element={<CompaniesListPage />} />
+        <Route path="/companies/:id" element={<CompanyDetailPage />} />
+        <Route path="/students" element={<StudentsListPage />} />
+        <Route path="/students/:id" element={<StudentDetailPage />} />
+
+        {/* Student Protected */}
+        <Route element={<ProtectedRoute roles={["student"]} />}>
           <Route path="/student/dashboard" element={<StudentDashboardPage />} />
           <Route path="/student/applications" element={<ApplicationsPage />} />
           <Route path="/student/profile" element={<StudentProfilePage />} />
         </Route>
-      </Route>
 
-      {/* Company Protected */}
-      <Route element={<ProtectedRoute roles={["company"]} />}>
-        <Route element={<DashboardLayout />}>
+        {/* Company Protected */}
+        <Route element={<ProtectedRoute roles={["company"]} />}>
           <Route path="/company/dashboard" element={<CompanyDashboardPage />} />
           <Route path="/company/profile" element={<CompanyProfilePage />} />
         </Route>

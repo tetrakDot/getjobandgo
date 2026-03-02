@@ -10,6 +10,11 @@ class JobType(models.TextChoices):
     INTERN = "intern", "Intern"
 
 
+class SalaryPeriod(models.TextChoices):
+    MONTHLY = "monthly", "Monthly"
+    YEARLY = "yearly", "Yearly"
+
+
 class Job(UUIDBaseModel):
     company = models.ForeignKey(
         Company,
@@ -23,7 +28,12 @@ class Job(UUIDBaseModel):
         choices=JobType.choices,
         default=JobType.JOB,
     )
-    salary = models.DecimalField(max_digits=12, decimal_places=2)
+    salary = models.CharField(max_length=255)
+    salary_period = models.CharField(
+        max_length=20,
+        choices=SalaryPeriod.choices,
+        default=SalaryPeriod.YEARLY,
+    )
     location = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(default=timezone.now, editable=False)

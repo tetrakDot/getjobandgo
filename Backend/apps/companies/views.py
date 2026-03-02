@@ -36,7 +36,7 @@ class CompanyViewSet(
         if self.action == "create":
             return [permissions.AllowAny()]
         if self.action in {"list", "retrieve"}:
-            return [permissions.IsAuthenticated()]
+            return [permissions.AllowAny()]
         if self.action in {"pending", "verify", "reject", "destroy", "mark_pending"}:
             return [IsAdmin()]
         return [IsCompanyUser()]
@@ -44,7 +44,7 @@ class CompanyViewSet(
     def get_queryset(self):
         user = self.request.user
         if not user.is_authenticated:
-            return Company.objects.none()
+            return self.queryset.filter(verification_status="verified")
         if user.role in {UserRole.ADMIN, UserRole.SUPERADMIN}:
             return self.queryset
         if user.role == UserRole.STUDENT:

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../../services/authService';
 import { useAuth } from '../../hooks/useAuth';
+import { Eye, EyeOff, Building2, Lock } from 'lucide-react';
 
 function CompanyLoginPage() {
   const navigate = useNavigate();
   const { setUser, setAccessToken, setRefreshToken } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -27,70 +29,128 @@ function CompanyLoginPage() {
       setRefreshToken(data.refresh);
       navigate('/company/dashboard', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.detail || 'Unable to login. Check your credentials.');
+      setError(err.response?.data?.detail || 'Verification failed. Check your organization credentials.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-400 mb-1">
-          Company portal
-        </p>
-        <h2 className="text-xl font-semibold text-slate-50 tracking-tight">
-          Sign in to manage jobs
+    <div className="w-full max-w-sm mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="text-left">
+        {/* Mobile Logo */}
+        <Link to="/" className="md:hidden inline-block mb-8">
+           <div className="w-12 h-12 rounded-2xl bg-[#27187E] flex items-center justify-center shadow-lg">
+              <img src="/logo.png" alt="Logo" className="h-8 w-8 object-contain" />
+           </div>
+        </Link>
+        
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-4">
+           <Building2 size={12} className="text-primary-600" />
+           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">
+             Organization Portal
+           </p>
+        </div>
+        <h2 className="text-3xl font-serif font-black text-slate-900 tracking-tight leading-tight">
+          Manage your pipeline
         </h2>
-        <p className="mt-1 text-xs text-slate-400">
-          Access your job postings, review applicants, and manage your hiring pipeline.
+        <p className="mt-2 text-sm text-slate-500 font-medium leading-relaxed">
+          The enterprise control center for talent acquisition.
         </p>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-slate-200" htmlFor="email">
-            Company email
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="email">
+            Corporate Email Address
           </label>
-          <input
-            id="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-slate-50 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600"
-          />
+          <div className="relative group">
+            <input
+              id="email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="e.g. hiring@company.com"
+              className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white transition-all font-medium"
+            />
+          </div>
         </div>
-        <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-slate-200" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            required
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-slate-50 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600"
-          />
+
+        <div className="space-y-2">
+          <div className="flex justify-between items-center ml-1">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400" htmlFor="password">
+              Access Key
+            </label>
+            <button type="button" className="text-[10px] font-black uppercase tracking-widest text-primary-500 hover:text-primary-600 transition-colors">
+              Recover?
+            </button>
+          </div>
+          <div className="relative group">
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              required
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full px-5 py-4 pr-12 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white transition-all font-medium"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-primary-500 transition-colors"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
-        {error && <p className="text-xs text-red-400">{error}</p>}
+
+        <div className="flex items-center gap-3 ml-1">
+            <input type="checkbox" id="remember" className="w-4 h-4 rounded border-slate-200 text-primary-500 focus:ring-primary-500/20" />
+            <label htmlFor="remember" className="text-[11px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer select-none">Secure Session</label>
+        </div>
+
+        {error && (
+          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 flex items-center gap-3 animate-in shake duration-500">
+            <p className="text-[11px] text-rose-600 font-bold uppercase tracking-tight leading-relaxed">{error}</p>
+          </div>
+        )}
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex justify-center items-center gap-2 px-3 py-2 rounded-xl bg-primary-600 text-sm font-medium text-slate-50 hover:bg-primary-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+          className="group w-full flex justify-center items-center gap-3 px-6 py-4 rounded-2xl bg-[#27187E] text-[11px] font-black uppercase tracking-[0.2em] text-white hover:bg-primary-600 shadow-2xl shadow-primary-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition-all active:scale-95"
         >
-          {loading ? 'Signing in…' : 'Sign in'}
+          {loading ? 'Verifying...' : (
+            <>
+              Authorize Access <Lock size={14} className="group-hover:translate-x-1 transition-transform" />
+            </>
+          )}
         </button>
-        <div className="mt-4 text-center">
-          <p className="text-xs text-slate-400">
-            Don't have an account?{' '}
-            <Link to="/auth/company/register" className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
-              Register here
-            </Link>
-          </p>
-          <div className="mt-2 text-center text-xs text-slate-500">
-             <Link to="/auth/login" className="hover:text-slate-300 underline underline-offset-2">Go to Student Portal</Link>
+
+        <div className="pt-10 space-y-8">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-100"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <span className="px-4 bg-white text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">Need an account?</span>
+            </div>
+          </div>
+
+          <Link 
+            to="/auth/company/register" 
+            className="w-full flex items-center justify-center py-4 rounded-2xl border-2 border-slate-100 text-[11px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 hover:border-slate-200 transition-all active:scale-95"
+          >
+            Register Organization
+          </Link>
+
+          <div className="text-center">
+             <Link to="/auth/login" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 hover:text-primary-600 transition-colors">
+                Talent Access →
+             </Link>
           </div>
         </div>
       </form>
@@ -99,4 +159,3 @@ function CompanyLoginPage() {
 }
 
 export default CompanyLoginPage;
-

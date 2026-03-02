@@ -41,15 +41,30 @@ class JobViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
+        from apps.companies.models import Company, CompanyVerificationStatus
+        
         if user.role == UserRole.COMPANY:
             company = Company.objects.filter(user=user).first()
             if not company:
-                raise PermissionDenied("Associated company profile not found.")
-            if company.verification_status != "verified":
-                raise PermissionDenied("Your company profile must be verified before you can post a job.")
+                raise PermissionDenied("Associated company profile not found. Please complete your profile.")
+            if company.verification_status != CompanyVerificationStatus.VERIFIED:
+                raise PermissionDenied(f"Your company profile must be verified before you can post a job. Current status: {company.get_verification_status_display()}")
             serializer.save(company=company)
         elif user.role in {UserRole.ADMIN, UserRole.SUPERADMIN}:
-            serializer.save()
+            # Check if company ID is already in the validated data (from admin panel)
+            if "company" in serializer.validated_data:
+                serializer.save()
+            else:
+                # If no company specified, look for the Admin's own company profile first
+                comp = Company.objects.filter(user=user).first()
+                if not comp:
+                    # If the admin has no profile, default to any existing company to prevent crash in the frontend dashboard
+                    comp = Company.objects.first()
+                
+                if not comp:
+                    raise PermissionDenied("No company profile found in the system. Admin cannot post a job without at least one company.")
+                
+                serializer.save(company=comp)
         else:
             raise PermissionDenied("You are not allowed to create jobs.")
 

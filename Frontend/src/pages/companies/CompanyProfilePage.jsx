@@ -78,67 +78,92 @@ function CompanyProfilePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-10 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-slate-50">
-          Company Profile
+        <h1 className="text-3xl font-serif font-black text-slate-900 tracking-tight">
+          Organization Profile
         </h1>
-        <p className="mt-1 text-xs text-slate-400">
-          Manage your company's public information.
+        <p className="mt-2 text-sm text-slate-500 font-medium">
+          Manage your company's identity and public presence on the talent network.
         </p>
       </div>
       
-      <div className="rounded-2xl bg-slate-900/80 border border-slate-800 shadow-sm overflow-hidden">
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Company Name</label>
+      <div className="bg-white border border-slate-100 rounded-[3rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+        <form onSubmit={handleSubmit} className="p-10 md:p-16 space-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Entity Name</label>
               <input required type="text" value={formData.company_name} onChange={e => setFormData({ ...formData, company_name: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold" />
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Contact Phone</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Corporate Contact</label>
               <input type="text" value={formData.contact_phone} onChange={e => setFormData({ ...formData, contact_phone: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold" />
             </div>
           </div>
           
-          <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Company Type (e.g. IT, Healthcare, Finance)</label>
-            <input type="text" value={formData.company_type} onChange={e => setFormData({ ...formData, company_type: e.target.value })} 
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+          <div className="space-y-2">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Industry Vertical</label>
+            <select 
+              value={formData.company_type} 
+              onChange={e => setFormData({ ...formData, company_type: e.target.value })} 
+              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold appearance-none cursor-pointer"
+            >
+              <option value="" disabled>Select company type</option>
+              <option value="Enterprise">Enterprise</option>
+              <option value="Startup">Startup</option>
+              <option value="SME">SME</option>
+              <option value="MNC">MNC</option>
+              <option value="Technology">Technology</option>
+              <option value="Finance">Finance</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+            </select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Country</label>
-              <input type="text" value={formData.country} onChange={e => setFormData({ ...formData, country: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Country</label>
+              <select 
+                value={formData.country} 
+                onChange={e => setFormData({ ...formData, country: e.target.value })} 
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold appearance-none cursor-pointer"
+              >
+                <option value="">Select Country</option>
+                <option value="India">India</option>
+                <option value="USA">USA</option>
+              </select>
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">State</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">State</label>
               <input type="text" value={formData.state} onChange={e => setFormData({ ...formData, state: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold" />
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">District</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">District</label>
               <input type="text" value={formData.district} onChange={e => setFormData({ ...formData, district: e.target.value })} 
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500" />
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold" />
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Company Description</label>
+          <div className="space-y-2">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Organization Brief</label>
             <textarea rows={6} required value={formData.company_description} onChange={e => setFormData({ ...formData, company_description: e.target.value })} 
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-primary-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-[2rem] px-8 py-6 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all resize-none font-medium leading-relaxed"
               placeholder="Tell candidates what your company does..."></textarea>
           </div>
 
-          {success && <p className="text-xs text-emerald-400">{success}</p>}
-
-          <div className="pt-4 border-t border-slate-800 flex justify-end">
-            <button disabled={saving} type="submit" className="px-5 py-2.5 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm font-medium disabled:opacity-50 transition-colors">
-              {saving ? 'Saving...' : 'Save Profile Changes'}
+          <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex-1">
+                {success && (
+                    <div className="flex items-center gap-3 text-emerald-600 font-black text-[10px] uppercase tracking-[0.2em] bg-emerald-50 px-6 py-3 rounded-xl border border-emerald-100 animate-in slide-in-from-left-4">
+                        <CheckCircle2 size={16} /> {success}
+                    </div>
+                )}
+            </div>
+            <button disabled={saving} type="submit" className="min-w-[240px] px-10 py-5 bg-primary-500 hover:bg-primary-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-primary-500/20 active:scale-95 disabled:opacity-50 transition-all">
+              {saving ? 'Synchronizing...' : 'Save Corporate Changes'}
             </button>
           </div>
         </form>

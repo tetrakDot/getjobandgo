@@ -170,6 +170,7 @@ const Jobs = () => {
     description: "",
     job_type: "job",
     salary: "",
+    salary_period: "yearly",
     location: "",
     is_active: true,
   });
@@ -238,6 +239,7 @@ const Jobs = () => {
       description: "",
       job_type: "job",
       salary: "",
+      salary_period: "yearly",
       location: "",
       is_active: true,
     });
@@ -252,6 +254,7 @@ const Jobs = () => {
       description: job.description || "",
       job_type: job.job_type || "job",
       salary: job.salary || "",
+      salary_period: job.salary_period || "yearly",
       location: job.location || "",
       is_active: job.is_active,
     });
@@ -625,17 +628,18 @@ const Jobs = () => {
                             marginTop: 3,
                           }}
                         >
-                          <IndianRupee
-                            size={10}
-                            style={{ color: "rgba(100,116,139,0.5)" }}
-                          />
                           <span
                             style={{
                               fontSize: 12,
                               color: "rgba(100,116,139,0.7)",
+                              fontWeight: 710,
                             }}
                           >
-                            {job.salary}
+                            {job.salary ? (
+                              job.salary.toString().startsWith('₹') || job.salary.toString().startsWith('$') 
+                                ? job.salary 
+                                : `${job.company_country?.toLowerCase() === 'usa' ? '$' : '₹'}${job.salary} ${job.salary_period === 'monthly' ? '/ Mo' : 'LPA'}`
+                            ) : "Competitive"}
                           </span>
                         </div>
                       </td>
@@ -882,7 +886,7 @@ const Jobs = () => {
                     gap: 14,
                   }}
                 >
-                  <Field label="Salary">
+                  <Field label="Salary Amount">
                     <input
                       type="text"
                       required
@@ -892,8 +896,22 @@ const Jobs = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, salary: e.target.value })
                       }
-                      placeholder="e.g. ₹ 10,00,000"
+                      placeholder="e.g. 10,00,000"
                     />
+                  </Field>
+
+                  <Field label="Salary Period">
+                    <select
+                      className="jb-select"
+                      required
+                      value={formData.salary_period}
+                      onChange={(e) =>
+                        setFormData({ ...formData, salary_period: e.target.value })
+                      }
+                    >
+                      <option value="monthly">Monthly</option>
+                      <option value="yearly">Yearly</option>
+                    </select>
                   </Field>
 
                   <Field label="Location">
