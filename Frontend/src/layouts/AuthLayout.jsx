@@ -39,7 +39,7 @@ function AuthLayout() {
 
             <div className="relative z-10">
               <Link to="/" className="inline-block mb-10 group transition-transform hover:scale-105 active:scale-95 duration-500">
-                 <img src="/logo.png" alt="GetJobGo" className="h-10 lg:h-12 w-auto drop-shadow-2xl" />
+                 <img src="/logo.png" alt="GetJobAndGo" className="h-10 lg:h-12 w-auto drop-shadow-2xl" />
               </Link>
               <h1 className="text-3xl lg:text-4xl font-serif font-black tracking-tight leading-tight">
                 Scale your <br/>future today.
@@ -76,7 +76,7 @@ function AuthLayout() {
 
         {/* Footer */}
         <div className="text-center md:text-left text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 px-4">
-            © 2026 GetJobGo. All rights reserved.
+            © 2026 GetJobAndGo. All rights reserved.
         </div>
       </div>
     </div>

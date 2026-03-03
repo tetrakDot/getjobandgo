@@ -159,17 +159,14 @@ function CompanyRegisterPage() {
             <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="country">
               Country
             </label>
-            <select
+            <input
               id="country"
               name="country"
               value={form.country}
               onChange={handleChange}
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium appearance-none cursor-pointer"
-            >
-              <option value="">Select Country</option>
-              <option value="India">India</option>
-              <option value="USA">USA</option>
-            </select>
+              placeholder="e.g. India"
+              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
+            />
           </div>
           <div className="space-y-2">
             <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="state">

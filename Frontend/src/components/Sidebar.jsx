@@ -10,6 +10,7 @@ import {
   Search,
   Building2,
   X,
+  Sparkles,
 } from "lucide-react";
 
 function NavItem({ to, label, icon: Icon, end = false }) {
@@ -107,6 +108,11 @@ function Sidebar({ isOpen, onClose }) {
                 label="Dashboard"
                 icon={LayoutDashboard}
                 end={true}
+              />
+              <NavItem
+                to="/2ex"
+                label="2eX Evaluation"
+                icon={Sparkles}
               />
               <NavItem to="/jobs" label="Open Roles" icon={Briefcase} />
             </div>

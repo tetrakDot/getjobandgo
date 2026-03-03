@@ -20,6 +20,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("apps.authentication.urls")),
     path("api/reports/dashboard/", DashboardStatsView.as_view(), name='dashboard_stats'),
+    path("api/2ex/", include("apps.evaluator.urls")),
     path("api/", include(router.urls)),
 ]
 

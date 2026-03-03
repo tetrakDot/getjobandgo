@@ -21,16 +21,16 @@ function HomePage() {
   return (
     <>
       <SEO
-        title="GetJobGo | Top Engineering & IT Jobs for Freshers"
-        description="Find verified engineering and IT jobs, internships, and entry-level roles at GetJobGo. The premium portal where every application gets a tracked response."
-        canonical="https://getjobgo.com/"
+        title="GetJobAndGo | Top Engineering & IT Jobs for Freshers"
+        description="Find verified engineering and IT jobs, internships, and entry-level roles at GetJobAndGo. The premium portal where every application gets a tracked response."
+        canonical="https://getjobandgo.com/"
       />
       <div className="min-h-screen bg-[#F7F7FF] text-slate-900 font-sans selection:bg-primary-500/10 overflow-x-hidden">
         {/* Navigation Bar */}
         <nav className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 h-20 flex items-center justify-between">
             <div className="flex items-center gap-3">
-               <div className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-[#27187E] flex items-center justify-center shadow-lg">
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-[#27187E] flex items-center justify-center shadow-lg">
                 <img
                   src="/logo.png"
                   alt="Get Job And Go Logo"
@@ -44,19 +44,44 @@ function HomePage() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8 text-[11px] font-black uppercase tracking-widest">
-              <Link to="/" className="text-[#27187E]">Home</Link>
-              <Link to="/jobs" className="text-slate-400 hover:text-[#27187E] transition-colors">Opportunities</Link>
+              <Link to="/" className="text-[#27187E]">
+                Home
+              </Link>
+              <Link
+                to="/2ex"
+                className="text-slate-400 hover:text-[#27187E] transition-colors"
+              >
+                2eX
+              </Link>
+              <Link
+                to="/jobs"
+                className="text-slate-400 hover:text-[#27187E] transition-colors"
+              >
+                Opportunities
+              </Link>
               {user ? (
                 <Link
-                  to={user.role === "company" ? "/company/dashboard" : "/student/dashboard"}
+                  to={
+                    user.role === "company"
+                      ? "/company/dashboard"
+                      : "/student/dashboard"
+                  }
                   className="px-6 py-3 rounded-2xl bg-[#27187E] text-white hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/20 active:scale-95"
-                >Dashboard</Link>
+                >
+                  Dashboard
+                </Link>
               ) : (
                 <div className="flex items-center gap-6 border-l border-slate-100 pl-6">
-                  <Link to="/auth/login" className="text-slate-400 hover:text-[#27187E] transition-colors flex items-center gap-2">
+                  <Link
+                    to="/auth/login"
+                    className="text-slate-400 hover:text-[#27187E] transition-colors flex items-center gap-2"
+                  >
                     <User className="w-4 h-4" /> Talent
                   </Link>
-                  <Link to="/auth/company/login" className="text-slate-400 hover:text-[#27187E] transition-colors flex items-center gap-2">
+                  <Link
+                    to="/auth/company/login"
+                    className="text-slate-400 hover:text-[#27187E] transition-colors flex items-center gap-2"
+                  >
                     <Building2 className="w-4 h-4" /> Company
                   </Link>
                 </div>
@@ -64,7 +89,7 @@ function HomePage() {
             </div>
 
             {/* Mobile Menu Toggle */}
-            <button 
+            <button
               className="lg:hidden p-2 text-slate-600 hover:text-[#27187E] transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -76,22 +101,55 @@ function HomePage() {
           {isMenuOpen && (
             <div className="lg:hidden absolute top-20 inset-x-0 bg-white border-b border-slate-100 shadow-2xl py-8 px-6 animate-in slide-in-from-top-4 duration-300 z-50">
               <div className="flex flex-col gap-6 text-sm font-black uppercase tracking-widest">
-                <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-[#27187E]">Home</Link>
-                <Link to="/jobs" onClick={() => setIsMenuOpen(false)} className="text-slate-500 hover:text-[#27187E]">Opportunities</Link>
+                <Link
+                  to="/"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-[#27187E]"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/2ex"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-500 hover:text-[#27187E]"
+                >
+                  2eX
+                </Link>
+                <Link
+                  to="/jobs"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-500 hover:text-[#27187E]"
+                >
+                  Opportunities
+                </Link>
                 <div className="h-px bg-slate-50 my-2" />
                 {user ? (
-                   <Link
-                   to={user.role === "company" ? "/company/dashboard" : "/student/dashboard"}
-                   onClick={() => setIsMenuOpen(false)}
-                   className="w-full text-center px-6 py-4 rounded-2xl bg-[#27187E] text-white font-black hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/20 active:scale-95"
-                 >Go to Dashboard</Link>
+                  <Link
+                    to={
+                      user.role === "company"
+                        ? "/company/dashboard"
+                        : "/student/dashboard"
+                    }
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full text-center px-6 py-4 rounded-2xl bg-[#27187E] text-white font-black hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/20 active:scale-95"
+                  >
+                    Go to Dashboard
+                  </Link>
                 ) : (
                   <>
-                    <Link to="/auth/login" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between text-slate-500 py-2">
+                    <Link
+                      to="/auth/login"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-between text-slate-500 py-2"
+                    >
                       <span>Join as Talent</span>
                       <User className="w-5 h-5" />
                     </Link>
-                    <Link to="/auth/company/login" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between text-slate-500 py-2">
+                    <Link
+                      to="/auth/company/login"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-between text-slate-500 py-2"
+                    >
                       <span>Organization Access</span>
                       <Building2 className="w-5 h-5" />
                     </Link>
@@ -99,7 +157,9 @@ function HomePage() {
                       to="/auth/register"
                       onClick={() => setIsMenuOpen(false)}
                       className="w-full text-center px-6 py-4 rounded-2xl bg-[#27187E] text-white font-black hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/20 active:scale-95 mt-4"
-                    >Get Started Free</Link>
+                    >
+                      Get Started Free
+                    </Link>
                   </>
                 )}
               </div>
@@ -117,11 +177,14 @@ function HomePage() {
               <div className="max-w-3xl mx-auto p-8 rounded-[3rem] bg-white/40 backdrop-blur-sm border border-white shadow-[0_20px_60px_rgba(0,0,0,0.02)] border-t-2 border-t-primary-500/10">
                 <blockquote className="space-y-6">
                   <p className="text-xl md:text-2xl font-serif font-black text-[#27187E] leading-relaxed italic">
-                    "தெய்வத்தான் ஆகாதெனினும் முயற்சிதன் <br className="hidden md:block" /> மெய்வருத்தக் கூலி தரும்."
+                    "தெய்வத்தான் ஆகாதெனினும் முயற்சிதன்{" "}
+                    <br className="hidden md:block" /> மெய்வருத்தக் கூலி தரும்."
                   </p>
                   <div className="w-12 h-1 bg-primary-500/20 mx-auto rounded-full" />
                   <p className="text-[12px] md:text-sm text-slate-500 font-bold leading-relaxed uppercase tracking-widest max-w-xl mx-auto">
-                    ஒரு செயல் தெய்வத்தால் கூட ஆகாது என்று தோன்றினாலும், மனிதன் விடாமுயற்சி செய்தால், அந்த முயற்சி வீணாகாது — அது கண்டிப்பாக உழைப்பிற்கு உரிய பலனைத் தரும்.
+                    ஒரு செயல் தெய்வத்தால் கூட ஆகாது என்று தோன்றினாலும், மனிதன்
+                    விடாமுயற்சி செய்தால், அந்த முயற்சி வீணாகாது — அது கண்டிப்பாக
+                    உழைப்பிற்கு உரிய பலனைத் தரும்.
                   </p>
                 </blockquote>
               </div>
@@ -135,8 +198,9 @@ function HomePage() {
             </h1>
 
             <p className="text-base md:text-xl text-slate-500 mb-10 md:mb-12 max-w-2xl mx-auto leading-relaxed font-medium animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-              The premium network dedicated to connecting top-tier students and verified companies. 
-              Eliminating friction in the hiring funnel through rigorous human-grade verification.
+              The premium network dedicated to connecting top-tier students and
+              verified companies. Eliminating friction in the hiring funnel
+              through rigorous human-grade verification.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-5 md:gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
@@ -146,13 +210,15 @@ function HomePage() {
                     to="/auth/register"
                     className="group w-full sm:w-auto px-8 md:px-10 py-5 rounded-3xl bg-[#27187E] text-white font-black text-[10px] md:text-[11px] uppercase tracking-[0.2em] hover:bg-primary-600 transition-all shadow-2xl shadow-primary-500/30 flex items-center justify-center gap-3 active:scale-95"
                   >
-                    <User className="w-5 h-5 group-hover:scale-110 transition-transform" /> Join as Talent
+                    <User className="w-5 h-5 group-hover:scale-110 transition-transform" />{" "}
+                    Join as Talent
                   </Link>
                   <Link
                     to="/auth/company/register"
                     className="group w-full sm:w-auto px-8 md:px-10 py-5 rounded-3xl bg-white text-slate-900 font-black text-[10px] md:text-[11px] uppercase tracking-[0.2em] hover:bg-slate-50 border border-slate-200 transition-all shadow-xl shadow-black/5 flex items-center justify-center gap-3 active:scale-95"
                   >
-                    <Building2 className="w-5 h-5 group-hover:scale-110 transition-transform text-primary-500" /> Organization Access
+                    <Building2 className="w-5 h-5 group-hover:scale-110 transition-transform text-primary-500" />{" "}
+                    Organization Access
                   </Link>
                 </>
               ) : (
@@ -169,22 +235,38 @@ function HomePage() {
           {/* Stats / Proof Section */}
           <section className="bg-white border-y border-slate-100 py-16">
             <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-                <div className="space-y-2">
-                    <p className="text-4xl font-serif font-black text-[#27187E]">50+</p>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Partner MNCs</p>
-                </div>
-                <div className="space-y-2">
-                    <p className="text-4xl font-serif font-black text-[#27187E]">2K+</p>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Verified Talent</p>
-                </div>
-                <div className="space-y-2">
-                    <p className="text-4xl font-serif font-black text-[#27187E]">₹12L</p>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Avg. CTC</p>
-                </div>
-                <div className="space-y-2">
-                    <p className="text-4xl font-serif font-black text-[#27187E]">100%</p>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Trust Score</p>
-                </div>
+              <div className="space-y-2">
+                <p className="text-4xl font-serif font-black text-[#27187E]">
+                  1
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Partner Company
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-4xl font-serif font-black text-[#27187E]">
+                  2
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Verified Talent
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-4xl font-serif font-black text-[#27187E]">
+                  soon
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Avg. CTC
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-4xl font-serif font-black text-[#27187E]">
+                  100%
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Trust Score
+                </p>
+              </div>
             </div>
           </section>
 
@@ -192,9 +274,11 @@ function HomePage() {
           <section className="py-32 bg-slate-50/50">
             <div className="max-w-6xl mx-auto px-6 md:px-10 lg:px-12">
               <div className="text-center mb-24">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-600 mb-4">Core Philosophy</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-600 mb-4">
+                  Core Philosophy
+                </p>
                 <h2 className="text-5xl font-serif font-black text-slate-900 tracking-tight">
-                    Beyond Simple Job Listings.
+                  Beyond Simple Job Listings.
                 </h2>
                 <div className="mt-8 h-1.5 w-24 bg-[#27187E] mx-auto rounded-full" />
               </div>
@@ -208,8 +292,9 @@ function HomePage() {
                     Strict Verification
                   </h4>
                   <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                    Every organization and candidate undergoes a rigorous identity and document 
-                    verification process to ensure 100% platform integrity.
+                    Every organization and candidate undergoes a rigorous
+                    identity and document verification process to ensure 100%
+                    platform integrity.
                   </p>
                 </div>
 
@@ -221,8 +306,8 @@ function HomePage() {
                     Talent Matchmaking
                   </h4>
                   <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                    Our semantic matching engine connects students' knowledge stacks directly 
-                    with corporate technical requirements.
+                    Our semantic matching engine connects students' knowledge
+                    stacks directly with corporate technical requirements.
                   </p>
                 </div>
 
@@ -234,8 +319,8 @@ function HomePage() {
                     Secure Ecosystem
                   </h4>
                   <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                    Privacy-first approach ensures that sensitive documents like resumes 
-                    are shared only with verified corporate accounts.
+                    Privacy-first approach ensures that sensitive documents like
+                    resumes are shared only with verified corporate accounts.
                   </p>
                 </div>
               </div>
@@ -245,38 +330,59 @@ function HomePage() {
           {/* Tamil Support Section */}
           <section className="py-24 bg-[#27187E] text-white overflow-hidden relative">
             <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
-                <div className="absolute -top-10 -right-20 w-80 h-80 rounded-full border-[60px] border-white" />
+              <div className="absolute -top-10 -right-20 w-80 h-80 rounded-full border-[60px] border-white" />
             </div>
             <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-                <h3 className="text-2xl md:text-3xl font-serif font-black mb-8 leading-relaxed">
-                    Freshers & Interns க்கான நம்பகமான வேலை வாய்ப்பு தளம். 
-                    Verified செய்யப்பட்ட நிறுவனங்கள் மட்டும் இணையும் பாதுகாப்பான தளம்.
-                </h3>
-                <div className="flex items-center justify-center gap-4">
-                    <div className="h-px w-10 bg-white/30" />
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/50">Your Next Chapter Begins Here</p>
-                    <div className="h-px w-10 bg-white/30" />
-                </div>
+              <h3 className="text-2xl md:text-3xl font-serif font-black mb-8 leading-relaxed">
+                Freshers & Interns க்கான நம்பகமான வேலை வாய்ப்பு தளம். Verified
+                செய்யப்பட்ட நிறுவனங்கள் மட்டும் இணையும் பாதுகாப்பான தளம்.
+              </h3>
+              <div className="flex items-center justify-center gap-4">
+                <div className="h-px w-10 bg-white/30" />
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/50">
+                  Your Next Chapter Begins Here
+                </p>
+                <div className="h-px w-10 bg-white/30" />
+              </div>
             </div>
           </section>
         </main>
 
         {/* Footer */}
         <footer className="bg-white border-t border-slate-100 py-12">
-            <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-8">
-                <div className="flex items-center gap-3 grayscale opacity-70">
-                    <div className="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center">
-                        <img src="/logo.png" alt="Logo" className="w-5 h-5" />
-                    </div>
-                    <span className="text-sm font-serif font-black text-slate-900 tracking-tight">GetJob<span className="text-primary-500 italic">Go</span></span>
-                </div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">© 2026 GetJobGo. All rights reserved.</p>
-                <div className="flex items-center gap-6">
-                    <a href="#" className="text-[10px] font-bold text-slate-400 hover:text-[#27187E] transition-colors">Twitter</a>
-                    <a href="#" className="text-[10px] font-bold text-slate-400 hover:text-[#27187E] transition-colors">LinkedIn</a>
-                    <a href="#" className="text-[10px] font-bold text-slate-400 hover:text-[#27187E] transition-colors">Instagram</a>
-                </div>
+          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-3 grayscale opacity-70">
+              <div className="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center">
+                <img src="/logo.png" alt="Logo" className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-serif font-black text-slate-900 tracking-tight">
+                GetJob<span className="text-primary-500 italic">AndGo</span>
+              </span>
             </div>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+              © 2026 GetJobAndGo. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              <a
+                href="#"
+                className="text-[10px] font-bold text-slate-400 hover:text-[#27187E] transition-colors"
+              >
+                Twitter
+              </a>
+              <a
+                href="#"
+                className="text-[10px] font-bold text-slate-400 hover:text-[#27187E] transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="#"
+                className="text-[10px] font-bold text-slate-400 hover:text-[#27187E] transition-colors"
+              >
+                Instagram
+              </a>
+            </div>
+          </div>
         </footer>
       </div>
     </>

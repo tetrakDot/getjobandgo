@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "apps.jobs",
     "apps.applications",
     "apps.reports",
+    "apps.evaluator",
 ]
 
 MIDDLEWARE = [
@@ -169,4 +170,5 @@ CSRF_COOKIE_SECURE = _env_bool("DJANGO_CSRF_COOKIE_SECURE", False)
 SECURE_SSL_REDIRECT = _env_bool("DJANGO_SECURE_SSL_REDIRECT", False)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 

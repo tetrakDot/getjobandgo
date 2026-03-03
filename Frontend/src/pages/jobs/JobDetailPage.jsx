@@ -26,6 +26,30 @@ function JobDetailPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  const handleShare = async () => {
+    if (!job) return;
+    
+    const shareData = {
+      title: `${job.title} at ${job.company_name}`,
+      text: `Check out this opportunity: ${job.title} at ${job.company_name} on GetJobAndGo`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error("Error sharing:", err);
+        }
+      }
+    } else {
+      // Fallback: WhatsApp share link
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  };
+
   const handleApply = async () => {
     if (!user) {
       toast.info("Please sign in to apply.");
@@ -147,9 +171,9 @@ function JobDetailPage() {
   return (
     <>
       <SEO
-        title={`${job.title} Role at ${job.company_name} | GetJobGo`}
-        description={`Hiring ${job.title} at ${job.company_name} in ${job.location}. View salary, requirements and apply on GetJobGo - the verified talent network.`}
-        canonical={`https://getjobgo.com/jobs/${id}`}
+        title={`${job.title} Role at ${job.company_name} | GetJobAndGo`}
+        description={`Hiring ${job.title} at ${job.company_name} in ${job.location}. View salary, requirements and apply on GetJobAndGo - the verified talent network.`}
+        canonical={`https://getjobandgo.com/jobs/${id}`}
         schema={schema}
       />
 
@@ -161,7 +185,10 @@ function JobDetailPage() {
             >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Return to Listings
             </button>
-            <button className="p-3.5 rounded-2xl bg-white border border-slate-100 text-slate-400 hover:text-primary-600 hover:bg-primary-50 hover:border-primary-100 transition-all shadow-sm">
+            <button 
+              onClick={handleShare}
+              className="p-3.5 rounded-2xl bg-white border border-slate-100 text-slate-400 hover:text-primary-600 hover:bg-primary-50 hover:border-primary-100 transition-all shadow-sm"
+            >
                 <Share2 size={18} />
             </button>
         </div>

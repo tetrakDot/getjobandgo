@@ -149,15 +149,13 @@ function StudentProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="space-y-2">
               <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Country</label>
-              <select 
+              <input 
+                type="text"
                 value={formData.country} 
                 onChange={e => setFormData({ ...formData, country: e.target.value })} 
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold appearance-none cursor-pointer"
-              >
-                <option value="">Select Country</option>
-                <option value="India">India</option>
-                <option value="USA">USA</option>
-              </select>
+                placeholder="e.g. India"
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 transition-all font-bold"
+              />
             </div>
             <div className="space-y-2">
               <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">State</label>

@@ -8,14 +8,12 @@ function StudentRegisterPage() {
   const [form, setForm] = useState({
     full_name: '',
     phone: '',
-    skills: '',
     country: '',
     state: '',
     district: '',
     email: '',
     password: ''
   });
-  const [resume, setResume] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -25,27 +23,12 @@ function StudentRegisterPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        alert('Resume PDF must be under 2MB.');
-        e.target.value = '';
-        setResume(null);
-        return;
-      }
-      setResume(file);
-    } else {
-      setResume(null);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      await registerStudent({ ...form, resume });
+      await registerStudent(form);
       navigate('/auth/login', { replace: true });
     } catch (err) {
       setError('Unable to register. Please review your details.');
@@ -71,7 +54,7 @@ function StudentRegisterPage() {
         </div>
         <h2 className="text-3xl font-serif font-black text-slate-900 tracking-tight leading-tight">Create your account</h2>
         <p className="mt-2 text-sm text-slate-500 font-medium leading-relaxed max-w-sm">
-          Build your professional profile, upload your resume, and start applying to verified opportunities.
+          Join our professional community and start applying to verified opportunities.
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -105,36 +88,20 @@ function StudentRegisterPage() {
             />
           </div>
         </div>
-        <div className="space-y-2">
-          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="skills">
-            Core Expertise
-          </label>
-          <input
-            id="skills"
-            name="skills"
-            placeholder="e.g. React, Python, UI/UX Design"
-            value={form.skills}
-            onChange={handleChange}
-            className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-          />
-        </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           <div className="space-y-2">
             <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="country">
               Country
             </label>
-            <select
+            <input
               id="country"
               name="country"
               value={form.country}
               onChange={handleChange}
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium appearance-none cursor-pointer"
-            >
-              <option value="">Select Country</option>
-              <option value="India">India</option>
-              <option value="USA">USA</option>
-            </select>
+              placeholder="e.g. India"
+              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
+            />
           </div>
           <div className="space-y-2">
             <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="state">
@@ -163,20 +130,7 @@ function StudentRegisterPage() {
             />
           </div>
         </div>
-        <div className="space-y-2">
-          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="resume">
-            Digital Resume (PDF)
-          </label>
-          <div className="relative group">
-            <input
-              id="resume"
-              type="file"
-              accept="application/pdf"
-              onChange={handleFileChange}
-              className="w-full text-xs font-bold text-slate-400 file:mr-6 file:py-3.5 file:px-8 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-widest file:bg-slate-100 file:text-slate-700 hover:file:bg-primary-500 hover:file:text-white file:transition-all cursor-pointer bg-slate-50/50 p-2 rounded-2xl border border-dashed border-slate-200"
-            />
-          </div>
-        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="space-y-2">
             <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="email">

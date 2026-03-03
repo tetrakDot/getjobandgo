@@ -18,6 +18,7 @@ import CompanyProfilePage from "../pages/companies/CompanyProfilePage";
 import StudentsListPage from "../pages/students/StudentsListPage";
 import StudentDetailPage from "../pages/students/StudentDetailPage";
 import StudentProfilePage from "../pages/students/StudentProfilePage";
+import AiResumeEvaluator from "../pages/AiResumeEvaluator";
 import NotFoundPage from "../pages/NotFoundPage";
 
 function AppRoutes() {
@@ -37,6 +38,7 @@ function AppRoutes() {
       {/* Pages with Global Navigation (Sidebar + Topbar) */}
       <Route element={<DashboardLayout />}>
         {/* Public Browse Pages */}
+        <Route path="/2ex" element={<AiResumeEvaluator />} />
         <Route path="/jobs" element={<JobsListPage />} />
         <Route path="/jobs/:id" element={<JobDetailPage />} />
         <Route path="/companies" element={<CompaniesListPage />} />

@@ -6,9 +6,9 @@ function NotFoundPage() {
   return (
     <div className="min-h-screen bg-[#F7F7FF] flex items-center justify-center px-6 overflow-hidden relative">
       <SEO
-        title="404 - Page Not Found | GetJobGo"
+        title="404 - Page Not Found | GetJobAndGo"
         description="Oops! The page you're looking for has vanished into thin air."
-        canonical="https://getjobgo.com/404"
+        canonical="https://getjobandgo.com/404"
       />
       
       {/* Abstract Background Shapes */}

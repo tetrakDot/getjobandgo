@@ -26,7 +26,7 @@ function Topbar({ onMenuClick }) {
                <div className="w-8 h-8 rounded-xl bg-primary-500 flex items-center justify-center">
                   <img src="/logo.png" alt="L" className="h-5 w-5 brightness-0 invert" />
                </div>
-               <span className="font-serif font-black text-slate-900 text-sm tracking-tight">GetJob<span className="text-primary-500 italic">Go</span></span>
+               <span className="font-serif font-black text-slate-900 text-sm tracking-tight">GetJob<span className="text-primary-500 italic">AndGo</span></span>
             </Link>
 
             <div className={`hidden sm:flex px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest items-center gap-2 ${
