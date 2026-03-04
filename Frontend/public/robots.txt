@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Allow: /jobs/
+Allow: /companies/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /api/
 
-Sitemap: https://getjobgo.com/sitemap.xml
+Sitemap: https://getjobandgo.com/sitemap.xml

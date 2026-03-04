@@ -137,24 +137,39 @@ function JobDetailPage() {
     );
   }
 
+  // Calculate validThrough as 60 days from created_at
+  const createdDate = new Date(job.created_at);
+  const validThroughDate = new Date(createdDate);
+  validThroughDate.setDate(validThroughDate.getDate() + 60);
+
   const schema = {
     "@context": "https://schema.org/",
     "@type": "JobPosting",
     title: job.title,
-    description: job.description,
+    description: job.description || "The organization has not provided a detailed description for this role yet.",
     hiringOrganization: {
       "@type": "Organization",
       name: job.company_name,
+      sameAs: `https://getjobandgo.com/companies/${job.company}`,
+      logo: "https://getjobandgo.com/logo.png" // Placeholder, in real-world link to actual logo
     },
     jobLocation: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
-        addressLocality: job.location,
+        addressLocality: job.location || "Online",
+        addressRegion: job.company_state || "India", // Assuming this from job data if available
         addressCountry: "IN",
       },
     },
+    datePosted: job.created_at,
+    validThrough: validThroughDate.toISOString(),
     employmentType: job.job_type === "intern" ? "INTERN" : "FULL_TIME",
+    identifier: {
+      "@type": "PropertyValue",
+      name: "GetJobAndGo",
+      value: id
+    },
     baseSalary: job.salary
       ? {
           "@type": "MonetaryAmount",
@@ -162,10 +177,15 @@ function JobDetailPage() {
           value: {
             "@type": "QuantitativeValue",
             value: job.salary,
-            unitText: "YEAR",
+            unitText: job.salary_period === "monthly" ? "MONTH" : "YEAR",
           },
         }
       : undefined,
+    skills: job.category || "Software Development",
+    experienceRequirements: {
+      "@type": "OccupationalExperienceRequirements",
+      monthsOfExperience: 0 // Placeholder as it is not strictly in the backend model yet
+    }
   };
 
   return (
