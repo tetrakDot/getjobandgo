@@ -102,3 +102,20 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             return response
         except FileNotFoundError:
             raise Http404("Resume physical file is missing from server.")
+
+    @action(detail=False, methods=["get"])
+    def stats(self, request):
+        queryset = self.get_queryset()
+        total = queryset.count()
+        active = queryset.filter(status__in=["applied", "under_review"]).count()
+        shortlisted = queryset.filter(status="shortlisted").count()
+        hired = queryset.filter(status="hired").count()
+        rejected = queryset.filter(status="rejected").count()
+        
+        return Response({
+            "total": total,
+            "active": active,
+            "shortlisted": shortlisted,
+            "hired": hired,
+            "rejected": rejected
+        })

@@ -7,6 +7,9 @@ import StudentLoginPage from "../pages/auth/StudentLoginPage";
 import StudentRegisterPage from "../pages/auth/StudentRegisterPage";
 import CompanyLoginPage from "../pages/auth/CompanyLoginPage";
 import CompanyRegisterPage from "../pages/auth/CompanyRegisterPage";
+import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage";
+import VerifyOTPPage from "../pages/auth/VerifyOTPPage";
+import ResetPasswordPage from "../pages/auth/ResetPasswordPage";
 import StudentDashboardPage from "../pages/dashboard/StudentDashboardPage";
 import CompanyDashboardPage from "../pages/dashboard/CompanyDashboardPage";
 import JobsListPage from "../pages/jobs/JobsListPage";
@@ -19,6 +22,7 @@ import StudentsListPage from "../pages/students/StudentsListPage";
 import StudentDetailPage from "../pages/students/StudentDetailPage";
 import StudentProfilePage from "../pages/students/StudentProfilePage";
 import AiResumeEvaluator from "../pages/AiResumeEvaluator";
+import PremiumPage from "../pages/PremiumPage";
 import NotFoundPage from "../pages/NotFoundPage";
 
 function AppRoutes() {
@@ -33,12 +37,16 @@ function AppRoutes() {
         <Route path="/auth/register" element={<StudentRegisterPage />} />
         <Route path="/auth/company/login" element={<CompanyLoginPage />} />
         <Route path="/auth/company/register" element={<CompanyRegisterPage />} />
+        <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/auth/verify-otp" element={<VerifyOTPPage />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
       </Route>
 
       {/* Pages with Global Navigation (Sidebar + Topbar) */}
       <Route element={<DashboardLayout />}>
         {/* Public Browse Pages */}
         <Route path="/2ex" element={<AiResumeEvaluator />} />
+        <Route path="/premium" element={<PremiumPage />} />
         <Route path="/jobs" element={<JobsListPage />} />
         <Route path="/jobs/:id" element={<JobDetailPage />} />
         <Route path="/companies" element={<CompaniesListPage />} />

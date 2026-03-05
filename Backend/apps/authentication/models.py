@@ -72,3 +72,39 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return f"{self.email} ({self.role})"
 
+
+class PasswordResetOTP(models.Model):
+    email = models.EmailField()
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "password reset otp"
+        verbose_name_plural = "password reset otps"
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.email} - {self.otp}"
+
+    @property
+    def is_expired(self):
+        # OTP valid for 5 minutes
+        return timezone.now() > self.created_at + timezone.timedelta(minutes=5)
+
+
+class UserActivity(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="activities")
+    action = models.CharField(max_length=50) # login, logout
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "user activity"
+        verbose_name_plural = "user activities"
+        ordering = ["-timestamp"]
+
+    def __str__(self):
+        return f"{self.user.email} - {self.action} at {self.timestamp}"
+

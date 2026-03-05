@@ -23,7 +23,7 @@ class Company(UUIDBaseModel):
     )
     company_name = models.CharField(max_length=255)
     email = models.EmailField()
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, unique=True, db_index=True)
     company_type = models.CharField(max_length=100)
     company_description = models.TextField(blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)

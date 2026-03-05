@@ -43,16 +43,30 @@ class CompanyViewSet(
 
     def get_queryset(self):
         user = self.request.user
+        queryset = self.queryset
+
+        # Handle randomization if requested
+        random_count = self.request.query_params.get("random")
+        if random_count:
+            try:
+                count = int(random_count)
+                # Public or Students only see verified companies
+                if not user.is_authenticated or user.role == UserRole.STUDENT:
+                    queryset = queryset.filter(verification_status=CompanyVerificationStatus.VERIFIED)
+                return queryset.order_by("?")[:count]
+            except (ValueError, TypeError):
+                pass
+
         if not user.is_authenticated:
-            return self.queryset.filter(verification_status="verified")
+            return queryset.filter(verification_status=CompanyVerificationStatus.VERIFIED)
         if user.role in {UserRole.ADMIN, UserRole.SUPERADMIN}:
-            return self.queryset
+            return queryset
         if user.role == UserRole.STUDENT:
-            return self.queryset.filter(verification_status="verified")
+            return queryset.filter(verification_status=CompanyVerificationStatus.VERIFIED)
         if user.role == UserRole.COMPANY:
             if self.action in {"list", "retrieve"}:
-                return self.queryset.filter(verification_status="verified") | self.queryset.filter(user=user)
-            return self.queryset.filter(user=user)
+                return queryset.filter(verification_status=CompanyVerificationStatus.VERIFIED) | queryset.filter(user=user)
+            return queryset.filter(user=user)
         return Company.objects.none()
 
     def perform_destroy(self, instance):

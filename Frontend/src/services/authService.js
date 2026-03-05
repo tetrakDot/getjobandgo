@@ -36,3 +36,25 @@ export async function registerCompany(payload) {
   return data;
 }
 
+export async function logout() {
+  const { data } = await apiClient.post('/auth/logout/');
+  return data;
+}
+
+export async function forgotPassword(email) {
+  const { data } = await apiClient.post('/auth/forgot-password/', { email });
+  return data;
+}
+
+export async function verifyOTP(email, otp) {
+  const { data } = await apiClient.post('/auth/verify-otp/', { email, otp });
+  return data;
+}
+
+export async function resetPassword(email, otp, new_password) {
+  const { data } = await apiClient.post('/auth/reset-password/', { email, otp, new_password });
+  return data;
+}
+
+
+

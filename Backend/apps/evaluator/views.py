@@ -4,8 +4,8 @@ import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework import status, generics, serializers
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 try:
     import PyPDF2
@@ -18,11 +18,12 @@ except ImportError:
     docx = None
 
 try:
-    import google.generativeai as genai
+    from google import genai
 except ImportError:
     genai = None
 
 from django.conf import settings
+from .models import ResumeEvaluation
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +54,23 @@ class EvaluateResumeView(APIView):
             # 2. Perform AI Evaluation
             evaluation_results = self._evaluate_with_ai(job_description, resume_text)
             
+            # 3. Save to database for Admin management
+            try:
+                from .models import ResumeEvaluation
+                ResumeEvaluation.objects.create(
+                    user=request.user if request.user.is_authenticated else None,
+                    email=request.user.email if request.user.is_authenticated else "Guest",
+                    filename=resume_file.name,
+                    job_description=job_description,
+                    overall_score=evaluation_results.get('overall', 0),
+                    classification=evaluation_results.get('classification', 'Unknown'),
+                    recommendation=evaluation_results.get('recommendation', 'N/A'),
+                    payload=evaluation_results
+                )
+            except Exception as db_err:
+                logger.error(f"Failed to save evaluation record: {str(db_err)}")
+                # Continue anyway, don't fail the user request if DB save fails
+
             return Response(evaluation_results, status=status.HTTP_200_OK)
             
         except Exception as e:
@@ -122,8 +140,7 @@ class EvaluateResumeView(APIView):
         return self._evaluate_locally(jd_clean, resume_clean)
 
     def _evaluate_with_gemini(self, api_key, jd, resume):
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        client = genai.Client(api_key=api_key)
         
         system_instructions = """
         You are 2eX – an advanced AI Resume Evaluation and Job Matching System.
@@ -183,7 +200,10 @@ class EvaluateResumeView(APIView):
         Only return the raw JSON. No markdown backticks.
         """
         
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model='gemini-1.5-flash',
+            contents=prompt
+        )
         try:
             text = response.text.strip()
             # Remove markdown code blocks if any
@@ -364,3 +384,35 @@ class EvaluateResumeView(APIView):
         if score >= 40: return "Weak Match 🟠"
         return "Poor Match 🔴"
 
+
+class ResumeEvaluationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResumeEvaluation
+        fields = "__all__"
+
+class ResumeEvaluationListView(generics.ListAPIView, generics.DestroyAPIView):
+    queryset = ResumeEvaluation.objects.all()
+    serializer_class = ResumeEvaluationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Restriction: Only allow admin or superadmin to see evaluation logs
+        if self.request.user.role in ['admin', 'superadmin'] or self.request.user.is_staff:
+            return ResumeEvaluation.objects.all().select_related('user')
+        return ResumeEvaluation.objects.none()
+
+    def delete(self, request, *args, **kwargs):
+        if self.request.user.role in ['admin', 'superadmin'] or self.request.user.is_staff:
+            ResumeEvaluation.objects.all().delete()
+            return Response({"detail": "All logs cleared successfully."}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+class ResumeEvaluationDetailView(generics.RetrieveDestroyAPIView):
+    queryset = ResumeEvaluation.objects.all()
+    serializer_class = ResumeEvaluationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.role in ['admin', 'superadmin'] or self.request.user.is_staff:
+            return ResumeEvaluation.objects.all()
+        return ResumeEvaluation.objects.none()

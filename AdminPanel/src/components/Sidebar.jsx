@@ -9,6 +9,7 @@ import {
   X,
   LogOut,
   Zap,
+  ShieldAlert,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 
@@ -47,10 +48,22 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       accent: "#ec4899",
     },
     {
+      name: "2eX Evaluator",
+      path: "/evaluator",
+      icon: <Zap size={16} />,
+      accent: "#c7d2fe",
+    },
+    {
       name: "Settings",
       path: "/settings",
       icon: <Settings size={16} />,
       accent: "#10b981",
+    },
+    {
+      name: "Activity Logs",
+      path: "/activities",
+      icon: <ShieldAlert size={16} />,
+      accent: "#f43f5e",
     },
   ];
 

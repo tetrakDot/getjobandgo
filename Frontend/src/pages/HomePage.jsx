@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Briefcase,
@@ -12,11 +12,19 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
+import { apiClient } from "../services/apiClient";
 import SEO from "../SEO";
 
 function HomePage() {
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [platformStats, setPlatformStats] = useState({ students_display: '...', companies_display: '...' });
+
+  useEffect(() => {
+    apiClient.get('/platform-stats/')
+      .then((res) => setPlatformStats(res.data))
+      .catch(() => setPlatformStats({ students_display: '0', companies_display: '0' }));
+  }, []);
 
   return (
     <>
@@ -25,7 +33,7 @@ function HomePage() {
         description="Find verified engineering and IT jobs, internships, and entry-level roles at GetJobAndGo. The premium portal where every application gets a tracked response."
         canonical="https://getjobandgo.com/"
       />
-      <div className="min-h-screen bg-[#F7F7FF] text-slate-900 font-sans selection:bg-primary-500/10 overflow-x-hidden">
+      <div className="min-h-screen bg-[#F7F7FF] text-slate-900 font-sans selection:bg-primary-500/10">
         {/* Navigation Bar */}
         <nav className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 h-20 flex items-center justify-between">
@@ -169,7 +177,9 @@ function HomePage() {
 
         <main className="relative">
           {/* Subtle Background Glows */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[600px] bg-gradient-to-br from-primary-500/10 via-indigo-500/5 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
+          <div className="absolute inset-x-0 top-0 overflow-hidden h-[600px] pointer-events-none -z-10">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200%] max-w-6xl h-full bg-gradient-to-br from-primary-500/10 via-indigo-500/5 to-transparent blur-[120px] rounded-full" />
+          </div>
 
           {/* Hero Section */}
           <section className="max-w-6xl mx-auto px-6 md:px-10 lg:px-12 pt-16 md:pt-32 pb-20 text-center">
@@ -237,15 +247,15 @@ function HomePage() {
             <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
               <div className="space-y-2">
                 <p className="text-4xl font-serif font-black text-[#27187E]">
-                  1
+                  {platformStats.companies_display}
                 </p>
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                  Partner Company
+                  Partner {parseInt(platformStats.companies_display) === 1 ? 'Company' : 'Companies'}
                 </p>
               </div>
               <div className="space-y-2">
                 <p className="text-4xl font-serif font-black text-[#27187E]">
-                  2
+                  {platformStats.students_display}
                 </p>
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                   Verified Talent

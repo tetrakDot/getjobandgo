@@ -36,6 +36,7 @@ class CompanySerializer(serializers.ModelSerializer):
 class CompanyRegistrationSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(write_only=True)
+    phone = serializers.CharField(allow_blank=False, required=True)
 
     class Meta:
         model = Company
@@ -58,6 +59,32 @@ class CompanyRegistrationSerializer(serializers.ModelSerializer):
             "created_at",
         )
         read_only_fields = ("id", "created_at")
+
+    def validate_email(self, value):
+        value = value.strip().lower()
+        # Email must not already exist in the User table (covers both students and companies)
+        if User.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError(
+                "An account with this email address already exists. Please log in instead."
+            )
+        return value
+
+    def validate_phone(self, value):
+        value = value.strip()
+        if not value:
+            raise serializers.ValidationError("Phone number is required.")
+        # Check uniqueness across companies
+        if Company.objects.filter(phone=value).exists():
+            raise serializers.ValidationError(
+                "This phone number is already registered with another company account."
+            )
+        # Check uniqueness across students too
+        from apps.students.models import Student
+        if Student.objects.filter(phone=value).exists():
+            raise serializers.ValidationError(
+                "This phone number is already registered with a student account."
+            )
+        return value
 
     def validate(self, attrs):
         request = self.context.get("request")
@@ -85,12 +112,11 @@ class CompanyRegistrationSerializer(serializers.ModelSerializer):
         email = validated_data.pop("email")
         password = validated_data.pop("password")
         user = User.objects.create_user(email=email, password=password, role=UserRole.COMPANY)
-        
+
         # company profile is implicitly created via User post_save signal
         company = user.company_profile
         for attr, value in validated_data.items():
             setattr(company, attr, value)
         company.save()
-        
-        return company
 
+        return company

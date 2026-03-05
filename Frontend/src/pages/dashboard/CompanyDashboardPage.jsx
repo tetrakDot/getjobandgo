@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import { 
   Plus, Pencil, Loader2, Briefcase, Trash2, Download, 
   ChevronDown, Layers, Users, TrendingUp, CheckCircle2,
-  Clock, MapPin, DollarSign, X, Search
+  Clock, MapPin, DollarSign, X, Search, ArrowRight
 } from 'lucide-react';
 import { listJobs, createJob, updateJob, deleteJob } from '../../services/jobService';
-import { listMyApplications, updateApplication, downloadResume } from '../../services/applicationService';
+import { listMyApplications, updateApplication, downloadResume, getApplicationStats } from '../../services/applicationService';
+import { useAuth } from '../../hooks/useAuth';
+import { trackJobPosting } from '../../utils/analytics';
+import { confirmAction } from '../../utils/confirmToast.jsx';
 
 const statusConfig = {
   applied: { label: 'Applied', color: 'blue', icon: Clock },
@@ -43,6 +47,7 @@ function StatusBadge({ status, onChange }) {
 }
 
 function CompanyDashboardPage() {
+  const { user } = useAuth();
   const [jobs, setJobs] = useState([]);
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,6 +64,12 @@ function CompanyDashboardPage() {
     location: '',
   });
 
+  const [stats, setStats] = useState({
+    total: 0,
+    hired: 0,
+    active_jobs: 0
+  });
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -66,12 +77,19 @@ function CompanyDashboardPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [jobsData, appsData] = await Promise.all([
+      const [jobsData, appsData, statsData] = await Promise.all([
         listJobs(),
-        listMyApplications()
+        listMyApplications(),
+        getApplicationStats()
       ]);
       setJobs(jobsData.results || jobsData);
       setApplications(appsData.results || appsData);
+      
+      const activeJobsCount = (jobsData.results || jobsData).filter(j => j.is_active).length;
+      setStats({
+        ...statsData,
+        active_jobs: activeJobsCount
+      });
     } catch (err) {
       console.error(err);
     } finally {
@@ -116,16 +134,17 @@ function CompanyDashboardPage() {
     setShowModal(true);
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Permanently delete this opportunity?')) return;
-    try {
-      await deleteJob(id);
-      fetchJobs();
-      toast.success("Posting removed successfully");
-    } catch (err) {
-      console.error(err);
-      toast.error('Unable to remove posting');
-    }
+  const handleDelete = (id) => {
+    confirmAction('Permanently delete this opportunity?', async () => {
+      try {
+        await deleteJob(id);
+        fetchJobs();
+        toast.success("Posting removed successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error('Unable to remove posting');
+      }
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -135,7 +154,8 @@ function CompanyDashboardPage() {
       if (editingJob) {
         await updateJob(editingJob.id, formData);
       } else {
-        await createJob(formData);
+        const newJob = await createJob(formData);
+        trackJobPosting(user?.id || 'unknown_company', newJob.id);
       }
       setShowModal(false);
       fetchJobs();
@@ -209,7 +229,7 @@ function CompanyDashboardPage() {
       </div>
 
       {/* Analytics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="relative group bg-white border border-slate-100 rounded-[2.5rem] p-8 overflow-hidden shadow-sm transition-all hover:shadow-xl hover:shadow-black/[0.02]">
           <div className="flex items-center gap-4 mb-4">
              <div className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center border border-primary-100">
@@ -217,7 +237,7 @@ function CompanyDashboardPage() {
              </div>
              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Pipeline Total</p>
           </div>
-          <p className="text-4xl font-serif font-black text-slate-900">{applications.length}</p>
+          <p className="text-4xl font-serif font-black text-slate-900">{stats.total}</p>
           <p className="text-xs text-slate-400 mt-3 font-medium">Active candidates across all roles</p>
         </div>
 
@@ -228,7 +248,7 @@ function CompanyDashboardPage() {
              </div>
              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Successful Hires</p>
           </div>
-          <p className="text-4xl font-serif font-black text-slate-900">{applications.filter(a => a.status === 'hired').length}</p>
+          <p className="text-4xl font-serif font-black text-slate-900">{stats.hired}</p>
           <p className="text-xs text-slate-400 mt-3 font-medium">Candidates who joined the team</p>
         </div>
 
@@ -239,9 +259,22 @@ function CompanyDashboardPage() {
              </div>
              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Active Slots</p>
           </div>
-          <p className="text-4xl font-serif font-black text-slate-900">{jobs.filter(j => j.is_active).length}</p>
+          <p className="text-4xl font-serif font-black text-slate-900">{stats.active_jobs}</p>
           <p className="text-xs text-slate-400 mt-3 font-medium">Consulting with students now</p>
         </div>
+
+        <Link to="/students" className="relative group bg-gradient-to-br from-[#27187E] to-primary-600 rounded-[2.5rem] p-8 overflow-hidden shadow-xl shadow-primary-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] flex flex-col justify-between">
+           <div className="flex justify-between items-start">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
+                 <Users className="text-white" size={24} />
+              </div>
+              <ArrowRight className="text-white/60 group-hover:translate-x-1 transition-transform" size={20} />
+           </div>
+           <div>
+             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-1">Talent Library</p>
+             <p className="text-lg font-bold text-white uppercase tracking-tight">Discover Top Talent</p>
+           </div>
+        </Link>
       </div>
 
       {/* Active Postings */}

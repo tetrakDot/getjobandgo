@@ -9,6 +9,8 @@ import Jobs from '../pages/Jobs';
 import Applications from '../pages/Applications';
 import Students from '../pages/Students';
 import Settings from '../pages/Settings';
+import ActivityLogs from '../pages/ActivityLogs';
+import Evaluations from '../pages/Evaluations';
 
 const AppRoutes = () => {
   return (
@@ -28,6 +30,8 @@ const AppRoutes = () => {
         <Route path="jobs" element={<Jobs />} />
         <Route path="applications" element={<Applications />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="evaluator" element={<Evaluations />} />
+        <Route path="activities" element={<ActivityLogs />} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

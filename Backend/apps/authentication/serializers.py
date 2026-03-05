@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from .models import User, UserRole
+from .models import User, UserRole, UserActivity
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -62,3 +62,30 @@ class PasswordChangeSerializer(serializers.Serializer):
         user.save(update_fields=["password"])
         return user
 
+class UserActivitySerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+    user_role = serializers.CharField(source='user.role', read_only=True)
+
+    class Meta:
+        model = UserActivity
+        fields = ("id", "user", "user_email", "user_role", "action", "ip_address", "user_agent", "timestamp")
+        read_only_fields = ("id", "timestamp")
+
+
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        if not User.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError("No active account found with this email.")
+        return value
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField(max_length=6)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    new_password = serializers.CharField(write_only=True, min_length=8)

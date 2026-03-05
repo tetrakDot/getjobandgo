@@ -54,11 +54,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   // ── Logout ─────────────────────────────────────────────────────────────────
-  const logout = () => {
-    localStorage.removeItem("admin_access_token");
-    localStorage.removeItem("admin_refresh_token");
-    setUser(null);
-    window.location.href = "/login";
+  const logout = async () => {
+    try {
+      // Notify backend so logout is recorded in Audit Registry
+      await api.post("auth/logout/");
+    } catch (err) {
+      console.warn("Logout API call failed:", err?.message);
+    } finally {
+      localStorage.removeItem("admin_access_token");
+      localStorage.removeItem("admin_refresh_token");
+      setUser(null);
+      window.location.href = "/login";
+    }
   };
 
   // ── Render ─────────────────────────────────────────────────────────────────

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerStudent } from '../../services/authService';
-import { Eye, EyeOff, Lock } from 'lucide-react';
+import { trackRegistration } from '../../utils/analytics';
+import { ShieldCheck, UserPlus, ArrowRight } from 'lucide-react';
+import AuthInput from '../../components/auth/AuthInput';
+import AuthButton from '../../components/auth/AuthButton';
 
 function StudentRegisterPage() {
   const navigate = useNavigate();
@@ -14,185 +17,177 @@ function StudentRegisterPage() {
     email: '',
     password: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    // Clear field error on change
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setFieldErrors({});
     setLoading(true);
     try {
-      await registerStudent(form);
-      navigate('/auth/login', { replace: true });
+      const data = await registerStudent(form);
+      trackRegistration(data.user?.id || 'new_student');
+      navigate('/auth/login', { replace: true, state: { registrationSuccess: true } });
     } catch (err) {
-      setError('Unable to register. Please review your details.');
+      const responseData = err.response?.data;
+      if (responseData && typeof responseData === 'object') {
+        // Extract field-level errors
+        const fields = {};
+        let generalError = '';
+        Object.entries(responseData).forEach(([field, msgs]) => {
+          const msg = Array.isArray(msgs) ? msgs[0] : msgs;
+          if (['email', 'phone', 'password', 'full_name'].includes(field)) {
+            fields[field] = msg;
+          } else {
+            generalError = msg;
+          }
+        });
+        if (Object.keys(fields).length > 0) {
+          setFieldErrors(fields);
+          setError('Please fix the errors below.');
+        } else {
+          setError(generalError || 'Unable to register. Please review your details.');
+        }
+      } else {
+        setError('Connection failed. Please check your network.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div>
-        {/* Mobile Logo */}
-        <Link to="/" className="md:hidden inline-block mb-8">
-           <div className="w-12 h-12 rounded-2xl bg-[#27187E] flex items-center justify-center shadow-lg">
-              <img src="/logo.png" alt="Logo" className="h-8 w-8 object-contain" />
-           </div>
-        </Link>
-
+    <>
+      <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-4">
-           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-600">
-             Talent Network
+           <UserPlus size={14} className="text-[#27187E]" />
+           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#27187E]">
+             Candidate Enrollment
            </p>
         </div>
-        <h2 className="text-3xl font-serif font-black text-slate-900 tracking-tight leading-tight">Create your account</h2>
-        <p className="mt-2 text-sm text-slate-500 font-medium leading-relaxed max-w-sm">
-          Join our professional community and start applying to verified opportunities.
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight">Create Account</h2>
+        <p className="mt-2 text-sm text-slate-500 font-medium leading-relaxed max-w-sm mx-auto">
+          Join our professional community and start applying to premium opportunities.
         </p>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="space-y-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="full_name">
-              Full Name
-            </label>
-            <input
-              id="full_name"
-              name="full_name"
-              required
-              value={form.full_name}
-              onChange={handleChange}
-              placeholder="e.g. Alex Johnson"
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="phone">
-              Phone Number
-            </label>
-            <input
-              id="phone"
-              name="phone"
-              required
-              value={form.phone}
-              onChange={handleChange}
-              placeholder="+91 0000 000000"
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-            />
-          </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <AuthInput
+            label="Full Name"
+            id="full_name"
+            name="full_name"
+            required
+            value={form.full_name}
+            onChange={handleChange}
+            placeholder="Alex Johnson"
+          />
+          <AuthInput
+            label="Phone Number"
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            value={form.phone}
+            onChange={handleChange}
+            placeholder="+91 0000 000000"
+          />
+          {fieldErrors.phone && (
+            <p className="text-[11px] text-rose-600 font-bold mt-1 ml-1">{fieldErrors.phone}</p>
+          )}
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <div className="space-y-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="country">
-              Country
-            </label>
-            <input
-              id="country"
-              name="country"
-              value={form.country}
-              onChange={handleChange}
-              placeholder="e.g. India"
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="state">
-              State
-            </label>
-            <input
-              id="state"
-              name="state"
-              value={form.state}
-              onChange={handleChange}
-              placeholder="e.g. Kerala"
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="district">
-              District
-            </label>
-            <input
-              id="district"
-              name="district"
-              value={form.district}
-              onChange={handleChange}
-              placeholder="e.g. Ernakulam"
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-            />
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <AuthInput
+            label="Country"
+            id="country"
+            name="country"
+            value={form.country}
+            onChange={handleChange}
+            placeholder="e.g. India"
+          />
+          <AuthInput
+            label="State"
+            id="state"
+            name="state"
+            value={form.state}
+            onChange={handleChange}
+            placeholder="e.g. Kerala"
+          />
+          <AuthInput
+            label="District"
+            id="district"
+            name="district"
+            value={form.district}
+            onChange={handleChange}
+            placeholder="e.g. Ernakulam"
+          />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="space-y-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="email">
-              Email Address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={form.email}
-              onChange={handleChange}
-              placeholder="alex@example.com"
-              className="w-full px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <AuthInput
+            label="Email Address"
+            id="email"
+            name="email"
+            type="email"
+            required
+            value={form.email}
+            onChange={handleChange}
+            placeholder="alex@example.com"
+          />
+          {fieldErrors.email && (
+            <p className="text-[11px] text-rose-600 font-bold mt-1 ml-1">{fieldErrors.email}</p>
+          )}
+          <AuthInput
+            label="Security Key"
+            id="password"
+            name="password"
+            type="password"
+            required
+            minLength={8}
+            value={form.password}
+            onChange={handleChange}
+            placeholder="••••••••"
+          />
+        </div>
+
+        {error && (
+          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 animate-in shake duration-500">
+            <p className="text-[11px] text-rose-600 font-bold uppercase tracking-tight leading-relaxed text-center">{error}</p>
           </div>
-          <div className="space-y-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="password">
-              Account Password
-            </label>
-            <div className="relative group">
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                required
-                minLength={8}
-                value={form.password}
-                onChange={handleChange}
-                placeholder="••••••••"
-                className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-primary-500 transition-colors"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
+        )}
+
+        <AuthButton loading={loading}>
+          Join the Network <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+        </AuthButton>
+
+
+        <div className="pt-8 space-y-6">
+          <div className="text-center">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Already a member?</p>
+            <Link 
+              to="/auth/login" 
+              className="group inline-flex items-center gap-2 text-sm font-bold text-[#27187E] hover:text-[#1C1064] transition-all"
+            >
+              Access your portal <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </div>
-        {error && (
-            <div className="p-4 rounded-xl bg-rose-50 border border-rose-100 flex items-center gap-3 animate-in shake duration-500">
-                <p className="text-[11px] text-rose-600 font-bold uppercase tracking-tight">{error}</p>
-            </div>
-        )}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full flex justify-center items-center gap-3 px-6 py-4 rounded-2xl bg-[#27187E] text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-primary-600 shadow-xl shadow-primary-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition-all active:scale-95 mt-4"
-        >
-          {loading ? 'Processing Registration…' : (
-            <>
-              Join the Network <Lock size={14} />
-            </>
-          )}
-        </button>
       </form>
-    </div>
+    </>
   );
 }
 
 export default StudentRegisterPage;
-

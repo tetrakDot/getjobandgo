@@ -7,6 +7,15 @@ from django.core.management.utils import get_random_secret_key
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# Load .env file manually if python-dotenv is not installed
+env_file = BASE_DIR / ".env"
+if env_file.exists():
+    with env_file.open() as f:
+        for line in f:
+            if line.strip() and not line.startswith("#"):
+                key, value = line.strip().split("=", 1)
+                os.environ.setdefault(key, value)
+
 def _env_bool(name: str, default: bool = False) -> bool:
     value = os.getenv(name)
     if value is None:
@@ -132,7 +141,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": int(os.getenv("DRF_PAGE_SIZE", "20")),
+    "PAGE_SIZE": int(os.getenv("DRF_PAGE_SIZE", "1000")),
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.SearchFilter",
@@ -171,4 +180,13 @@ SECURE_SSL_REDIRECT = _env_bool("DJANGO_SECURE_SSL_REDIRECT", False)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+# Email Settings - Real Gmail SMTP
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "sailendraprasath05@gmail.com"
+EMAIL_HOST_PASSWORD = "avcbqwgavmzsuocr"
+DEFAULT_FROM_EMAIL = f"GetJobAndGo <{EMAIL_HOST_USER}>"
 

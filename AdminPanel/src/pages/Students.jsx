@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import api from "../services/api";
+import { toast } from "react-toastify";
 import { confirmAction } from "../utils/confirmToast.jsx";
 import {
   Search,
@@ -18,7 +19,7 @@ import {
   Clock,
   XCircle,
 } from "lucide-react";
-import { toast } from "react-toastify";
+
 
 /* ─── Shared styles ──────────────────────────────────────── */
 const inputStyle = {
@@ -994,7 +995,7 @@ const Students = () => {
                     onChange={(e) => {
                       const file = e.target.files[0];
                       if (file && file.size > 2 * 1024 * 1024) {
-                        alert("Resume file must be under 2MB.");
+                        toast.warning("Resume file must be under 2MB.");
                         e.target.value = "";
                         setNewStudent({ ...newStudent, resume: null });
                         return;
@@ -1175,7 +1176,7 @@ const Students = () => {
                     onChange={(e) => {
                       const file = e.target.files[0];
                       if (file && file.size > 2 * 1024 * 1024) {
-                        alert("Resume file must be under 2MB.");
+                        toast.warning("Resume file must be under 2MB.");
                         e.target.value = "";
                         setEditStudent({ ...editStudent, resume: null });
                         return;

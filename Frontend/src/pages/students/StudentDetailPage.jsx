@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getStudent, downloadStudentResume } from '../../services/studentService';
 import { Loader2, ArrowLeft, Download, User, MapPin, Mail, GraduationCap, Briefcase, Info, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 function StudentDetailPage() {
   const { user } = useAuth();
@@ -53,7 +54,7 @@ function StudentDetailPage() {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error(err);
-      alert('Resume not available or unable to download.');
+      toast.error('Resume unavailable at the moment.');
     } finally {
       setDownloading(false);
     }

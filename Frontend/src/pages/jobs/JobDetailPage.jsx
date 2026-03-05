@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { ArrowLeft, Briefcase, MapPin, DollarSign, Clock, Building2, CheckCircle2, Share2, Loader2, Send } from "lucide-react";
 import { toast } from "react-toastify";
 import SEO from "../../SEO";
+import { trackJobView, trackJobApply } from "../../utils/analytics";
 
 function JobDetailPage() {
   const { id } = useParams();
@@ -18,7 +19,10 @@ function JobDetailPage() {
 
   useEffect(() => {
     getJob(id)
-      .then((data) => setJob(data))
+      .then((data) => {
+        setJob(data);
+        trackJobView(id, user?.id);
+      })
       .catch((err) => {
         console.error(err);
         toast.error("Role no longer available.");
@@ -65,6 +69,7 @@ function JobDetailPage() {
     setSubmitting(true);
     try {
       await applyToJob(job.id);
+      trackJobApply(job.id, user.id);
       toast.success("Application successfully submitted!");
     } catch (err) {
       let errorMsg = "Unable to submit application.";

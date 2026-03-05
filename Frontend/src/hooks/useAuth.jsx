@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getStoredTokens, setStoredTokens, clearStoredTokens } from '../utils/storage';
-import { refreshToken as apiRefreshToken } from '../services/authService';
+import { refreshToken as apiRefreshToken, logout as apiLogout } from '../services/authService';
 
 const AuthContext = createContext(null);
 
@@ -35,12 +35,20 @@ export function AuthProvider({ children }) {
     }
   }, [accessToken, refreshToken, user]);
 
-  const logout = () => {
-    clearStoredTokens();
-    setUser(null);
-    setAccessToken(null);
-    setRefreshToken(null);
-    navigate('/');
+  const logout = async () => {
+    try {
+      // Notify backend so it can log the logout event
+      await apiLogout();
+    } catch (err) {
+      // Even if the API call fails, still clear local state
+      console.warn('Logout API call failed:', err?.message);
+    } finally {
+      clearStoredTokens();
+      setUser(null);
+      setAccessToken(null);
+      setRefreshToken(null);
+      navigate('/');
+    }
   };
 
   const refresh = async () => {

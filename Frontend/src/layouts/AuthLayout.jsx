@@ -1,82 +1,50 @@
 import React from 'react';
-import { Outlet, Link, Navigate } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
 
+/**
+ * Centered Card-Style Layout for Authentication
+ */
 function AuthLayout() {
-  const { user } = useAuth();
-
-  if (user) {
-    return <Navigate to={user.role === 'company' ? '/company/dashboard' : '/student/dashboard'} replace />;
-  }
-
+  const location = useLocation();
+  const isRegister = location.pathname.includes('register');
+  const isCompanyRegister = location.pathname.includes('company/register');
+  
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7FF] px-4 py-12 relative font-sans overflow-x-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-full md:w-1/2 h-full bg-gradient-to-l from-primary-500/5 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full md:w-1/3 h-1/2 bg-gradient-to-tr from-indigo-500/5 to-transparent pointer-events-none" />
+    <div className="relative min-h-screen w-full bg-white font-sans overflow-x-hidden">
+      {/* Background Snippet */}
+      <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none"></div>
 
-      {/* Main Content Container */}
-      <div className="w-full max-w-5xl relative z-10 flex flex-col gap-6 md:gap-8">
-        {/* Navigation */}
-        <div className="flex justify-start">
-          <Link 
-            to="/" 
-            className="group inline-flex items-center gap-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-primary-600 transition-all bg-white/90 hover:bg-white px-5 py-2.5 rounded-xl border border-slate-100 shadow-sm backdrop-blur-md"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" /> Back to Home
-          </Link>
-        </div>
-        
-        {/* Auth Card */}
-        <div className="grid md:grid-cols-2 gap-0 rounded-[2.5rem] md:rounded-[3.5rem] bg-white border border-slate-100 shadow-[0_40px_80px_rgba(39,24,126,0.05)] overflow-hidden animate-in fade-in zoom-in-95 duration-1000">
-          <div className="hidden md:flex flex-col justify-between p-10 lg:p-14 bg-[#27187E] text-white relative overflow-hidden">
-            {/* Abstract pattern overlay */}
-            <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none">
-               <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full border-[40px] border-white" />
-               <div className="absolute bottom-40 -left-20 w-64 h-64 rounded-full border-[20px] border-white" />
-            </div>
-
-            <div className="relative z-10">
-              <Link to="/" className="inline-block mb-10 group transition-transform hover:scale-105 active:scale-95 duration-500">
-                 <img src="/logo.png" alt="GetJobAndGo" className="h-10 lg:h-12 w-auto drop-shadow-2xl" />
-              </Link>
-              <h1 className="text-3xl lg:text-4xl font-serif font-black tracking-tight leading-tight">
-                Scale your <br/>future today.
-              </h1>
-              <p className="mt-6 text-sm lg:text-base text-white/70 font-medium max-w-[280px] leading-relaxed italic">
-                "Connecting ambitious talent with enterprises that value innovation and execution."
-              </p>
-            </div>
-            
-            <div className="space-y-5 lg:space-y-6 relative z-10">
-              <p className="font-black uppercase tracking-[0.3em] text-[9px] text-white/40">
-                Platform Pillars
-              </p>
-              <ul className="space-y-4 lg:space-y-5">
-                <li className="flex items-start gap-4 group">
-                  <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)] group-hover:scale-150 transition-transform" />
-                  <span className="text-xs font-bold text-white/80 leading-snug">Verified corporate onboarding with zero-trust security.</span>
-                </li>
-                <li className="flex items-start gap-4 group">
-                  <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white/40 group-hover:bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)] group-hover:scale-150 transition-transform" />
-                  <span className="text-xs font-bold text-white/80 leading-snug">Live application funnel tracking from submission to contract.</span>
-                </li>
-                <li className="flex items-start gap-4 group">
-                  <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white/40 group-hover:bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)] group-hover:scale-150 transition-transform" />
-                  <span className="text-xs font-bold text-white/80 leading-snug">Data-driven dashboards for precision career management.</span>
-                </li>
-              </ul>
-            </div>
+      <div className="relative min-h-screen flex items-center justify-center px-4 py-8 md:py-12 z-10 transition-all duration-500">
+        <div className={`w-full ${isCompanyRegister ? 'max-w-5xl' : isRegister ? 'max-w-2xl' : 'max-w-md'} flex flex-col gap-8`}>
+          {/* Simple Navigation */}
+          <div className="flex justify-center md:justify-start">
+            <Link 
+              to="/" 
+              className="group inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-[#27187E] transition-all bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-100 shadow-sm"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
+              Back to Home
+            </Link>
           </div>
-          <div className="p-8 sm:p-12 md:p-12 lg:p-16 bg-white flex flex-col justify-center min-h-[500px]">
+          
+          {/* Auth Card */}
+          <div className={`bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_30px_60px_rgba(39,24,126,0.08)] overflow-hidden animate-in fade-in zoom-in-95 duration-700 ${isCompanyRegister ? 'p-0' : 'p-8 md:p-12'}`}>
+            {!isCompanyRegister && (
+              <div className="flex flex-col items-center mb-10">
+                <Link to="/" className="hover:scale-105 transition-transform duration-300">
+                  <img src="/logo.png" alt="GetJobAndGo" className="h-10 w-auto" />
+                </Link>
+              </div>
+            )}
+            
             <Outlet />
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="text-center md:text-left text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 px-4">
-            © 2026 GetJobAndGo. All rights reserved.
+          {/* Simple Footer */}
+          <div className="text-center text-[10px] font-bold uppercase tracking-[0.3em] text-slate-300">
+              © 2026 GetJobAndGo. All rights reserved.
+          </div>
         </div>
       </div>
     </div>

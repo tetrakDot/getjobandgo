@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { listMyApplications } from '../../services/applicationService';
-import { Loader2, Briefcase, CheckCircle2, Clock, XCircle, Search, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Loader2, Briefcase, CheckCircle2, Clock, XCircle, Search, ArrowRight, Building2 } from 'lucide-react';
+import { listMyApplications, getApplicationStats } from '../../services/applicationService';
 
 const statusMap = {
   applied: { label: 'Applied', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100', icon: Clock },
@@ -23,15 +23,13 @@ function StudentDashboardPage() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await listMyApplications();
-        const results = data.results || data;
-        setApps(results);
+        const [appsData, statsData] = await Promise.all([
+          listMyApplications(),
+          getApplicationStats()
+        ]);
         
-        const total = results.length;
-        const active = results.filter(a => ['applied', 'under_review'].includes(a.status)).length;
-        const shortlisted = results.filter(a => a.status === 'shortlisted').length;
-        
-        setStats({ total, active, shortlisted });
+        setApps(appsData.results || appsData);
+        setStats(statsData);
       } catch (err) {
         console.error(err);
       } finally {
@@ -65,7 +63,7 @@ function StudentDashboardPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
          <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm transition-all hover:shadow-xl hover:shadow-black/[0.01]">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Total Submissions</p>
             <p className="text-4xl font-serif font-black text-slate-900">{stats.total}</p>
@@ -78,6 +76,16 @@ function StudentDashboardPage() {
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-400 mb-3">Shortlisted</p>
             <p className="text-4xl font-serif font-black text-primary-600">{stats.shortlisted}</p>
          </div>
+          <Link to="/companies" className="group bg-gradient-to-br from-primary-600 to-indigo-700 rounded-[2.5rem] p-8 shadow-xl shadow-primary-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] flex flex-col justify-between">
+             <div className="flex justify-between items-start">
+               <Building2 className="text-white/80" size={24} />
+               <ArrowRight className="text-white/60 group-hover:translate-x-1 transition-transform" size={20} />
+             </div>
+             <div>
+               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 mb-1">Partner Network</p>
+               <p className="text-lg font-bold text-white uppercase tracking-tight">Browse Companies</p>
+             </div>
+          </Link>
       </div>
 
       <div className="space-y-6">

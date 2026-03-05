@@ -21,4 +21,7 @@ export async function downloadResume(applicationId) {
   });
   return response.data;
 }
-
+export async function getApplicationStats() {
+  const { data } = await apiClient.get('/applications/stats/');
+  return data;
+}

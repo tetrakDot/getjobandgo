@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { listCompanies, updateCompany } from '../../services/companyService';
-import { Loader2 } from 'lucide-react';
+import { Loader2, CheckCircle2 } from 'lucide-react'; // Added CheckCircle2
+import { toast } from 'react-toastify';
 
 function CompanyProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -59,7 +60,7 @@ function CompanyProfilePage() {
       setSuccess('Company profile updated successfully!');
     } catch (err) {
       console.error(err);
-      alert('Error updating profile.');
+      toast.error('Error updating profile.');
     } finally {
       setSaving(false);
     }

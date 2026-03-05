@@ -16,7 +16,7 @@ class Student(models.Model):
         related_name="student_profile",
     )
     full_name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, unique=True, db_index=True)
     verification_status = models.CharField(
         max_length=20,
         choices=[

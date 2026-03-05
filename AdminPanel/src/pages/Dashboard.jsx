@@ -7,6 +7,9 @@ import {
   FileText,
   TrendingUp,
   CheckCircle2,
+  LogIn,
+  LogOut,
+  Globe
 } from "lucide-react";
 import {
   AreaChart,
@@ -18,6 +21,9 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 
 /* ─── Custom Tooltip ─────────────────────────────────────── */
@@ -202,6 +208,10 @@ const Dashboard = () => {
     verified_companies: 0,
     active_jobs: 0,
     total_applications: 0,
+    login_count: 0,
+    logout_count: 0,
+    student_geo: [],
+    company_geo: [],
     company_growth: [],
     applications_growth: [],
   });
@@ -220,6 +230,10 @@ const Dashboard = () => {
           verified_companies: 0,
           active_jobs: 0,
           total_applications: 0,
+          login_count: 0,
+          logout_count: 0,
+          student_geo: [],
+          company_geo: [],
           company_growth: [],
           applications_growth: [],
         });
@@ -265,6 +279,20 @@ const Dashboard = () => {
       icon: <FileText size={17} />,
       accent: "#f472b6",
       trend: "+22%",
+    },
+    {
+      title: "User Logins",
+      value: stats.login_count,
+      icon: <LogIn size={17} />,
+      accent: "#10b981",
+      trend: "Total",
+    },
+    {
+      title: "User Logouts",
+      value: stats.logout_count,
+      icon: <LogOut size={17} />,
+      accent: "#ef4444",
+      trend: "Total",
     },
   ];
 
@@ -617,6 +645,62 @@ const Dashboard = () => {
                     radius={[5, 5, 0, 0]}
                     barSize={26}
                   />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartCard>
+
+            <ChartCard
+              title="Student Regional Distribution"
+              subtitle="Where candidates are coming from"
+              badge="Geography"
+              badgeColor="#60a5fa"
+              delay={540}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  layout="vertical"
+                  data={stats.student_geo}
+                  margin={{ top: 8, right: 30, left: 40, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="rgba(255,255,255,0.04)" />
+                  <XAxis type="number" hide />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    axisLine={false} 
+                    tickLine={false}
+                    tick={{ fill: "rgba(148,163,184,0.7)", fontSize: 11, fontWeight: 500 }}
+                  />
+                  <Tooltip content={<CustomTooltip accent="#60a5fa" />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+                  <Bar dataKey="count" fill="#60a5fa" radius={[0, 4, 4, 0]} barSize={20} />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartCard>
+
+            <ChartCard
+              title="Company Regional Distribution"
+              subtitle="HQ locations of partners"
+              badge="Geography"
+              badgeColor="#a78bfa"
+              delay={620}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  layout="vertical"
+                  data={stats.company_geo}
+                  margin={{ top: 8, right: 30, left: 40, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="rgba(255,255,255,0.04)" />
+                  <XAxis type="number" hide />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    axisLine={false} 
+                    tickLine={false}
+                    tick={{ fill: "rgba(148,163,184,0.7)", fontSize: 11, fontWeight: 500 }}
+                  />
+                  <Tooltip content={<CustomTooltip accent="#a78bfa" />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+                  <Bar dataKey="count" fill="#a78bfa" radius={[0, 4, 4, 0]} barSize={20} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartCard>

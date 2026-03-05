@@ -28,16 +28,31 @@ class JobViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+
+        # Base queryset by role
         if not user.is_authenticated or user.role == UserRole.STUDENT:
-            return self.queryset.filter(is_active=True)
-        if user.role == UserRole.COMPANY:
+            base_qs = self.queryset.filter(is_active=True)
+        elif user.role == UserRole.COMPANY:
             company = Company.objects.filter(user=user).first()
             if not company:
                 return Job.objects.none()
-            return self.queryset.filter(company=company)
-        if user.role in {UserRole.ADMIN, UserRole.SUPERADMIN}:
-            return self.queryset
-        return self.queryset.filter(is_active=True)
+            base_qs = self.queryset.filter(company=company)
+        elif user.role in {UserRole.ADMIN, UserRole.SUPERADMIN}:
+            base_qs = self.queryset
+        else:
+            base_qs = self.queryset.filter(is_active=True)
+
+        # Handle ?random=N — returns N random jobs from the active pool
+        random_count = self.request.query_params.get("random")
+        if random_count:
+            try:
+                count = int(random_count)
+                # Always random from active jobs regardless of role
+                return self.queryset.filter(is_active=True).order_by("?")[:count]
+            except (ValueError, TypeError):
+                pass
+
+        return base_qs
 
     def perform_create(self, serializer):
         user = self.request.user

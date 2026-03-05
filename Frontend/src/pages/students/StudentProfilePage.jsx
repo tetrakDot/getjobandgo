@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { listStudents, updateStudent } from '../../services/studentService';
 import { Loader2, UploadCloud, CheckCircle2 } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 function StudentProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ function StudentProfilePage() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
-        alert('Resume PDF must be under 2MB.');
+        toast.warning('Resume PDF must be under 2MB.');
         if (fileInputRef.current) fileInputRef.current.value = '';
         setResumeFile(null);
         return;
@@ -90,7 +91,7 @@ function StudentProfilePage() {
       setResumeFile(null);
     } catch (err) {
       console.error(err);
-      alert('Error updating profile.');
+      toast.error('Failed to update profile changes.');
     } finally {
       setSaving(false);
     }

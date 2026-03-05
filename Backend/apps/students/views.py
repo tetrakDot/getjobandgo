@@ -45,15 +45,41 @@ class StudentViewSet(
 
     def get_queryset(self):
         user = self.request.user
+        queryset = self.queryset
+
+        # Handle randomization if requested
+        random_count = self.request.query_params.get("random")
+        if random_count:
+            try:
+                count = int(random_count)
+                # If student is browsing, only show verified students
+                if user.is_authenticated and user.role == UserRole.STUDENT:
+                    # Students usually shouldn't see each other unless allowed? 
+                    # But the requirement says "browse talents" for both.
+                    # Usually companies browse talents.
+                    pass
+                
+                # Default behavior for browsing: show verified
+                # Unless it's an admin
+                if not user.is_authenticated or user.role not in {UserRole.ADMIN, UserRole.SUPERADMIN}:
+                    queryset = queryset.filter(verification_status="verified")
+                
+                return queryset.order_by("?")[:count]
+            except (ValueError, TypeError):
+                pass
+
         if not user.is_authenticated:
-            return self.queryset
+            return queryset.filter(verification_status="verified")
+            
         if user.role in {UserRole.ADMIN, UserRole.SUPERADMIN, UserRole.COMPANY}:
-            return self.queryset
+            return queryset
+            
         if user.role == UserRole.STUDENT:
             if self.action in {"list", "retrieve"}:
-                return self.queryset
-            return self.queryset.filter(user=user)
-        return self.queryset.filter(user=user)
+                return queryset.filter(verification_status="verified")
+            return queryset.filter(user=user)
+            
+        return queryset.filter(user=user)
 
     def perform_destroy(self, instance):
         # Deleting the user will cascade and delete the student profile

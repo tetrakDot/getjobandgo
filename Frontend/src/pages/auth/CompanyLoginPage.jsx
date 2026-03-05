@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { login } from '../../services/authService';
 import { useAuth } from '../../hooks/useAuth';
-import { Eye, EyeOff, Building2, Lock } from 'lucide-react';
+import { trackLogin } from '../../utils/analytics';
+import { ShieldCheck, Lock, ArrowRight, Briefcase, CheckCircle } from 'lucide-react';
+import AuthInput from '../../components/auth/AuthInput';
+import AuthButton from '../../components/auth/AuthButton';
 
 function CompanyLoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUser, setAccessToken, setRefreshToken } = useAuth();
+  
+  const registrationSuccess = location.state?.registrationSuccess;
+  const resetSuccess = location.state?.resetSuccess;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -20,141 +27,103 @@ function CompanyLoginPage() {
     try {
       const data = await login(email, password);
       if (data.user.role !== 'company') {
-        setError('Please login with a company account.');
+        setError('Please use a company account for this portal.');
         setLoading(false);
         return;
       }
       setUser(data.user);
       setAccessToken(data.access);
       setRefreshToken(data.refresh);
+      trackLogin(data.user.id);
       navigate('/company/dashboard', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.detail || 'Verification failed. Check your organization credentials.');
+      setError(err.response?.data?.detail || 'Invalid email or password.');
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
-    <div className="w-full max-w-sm mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="text-left">
-        {/* Mobile Logo */}
-        <Link to="/" className="md:hidden inline-block mb-8">
-           <div className="w-12 h-12 rounded-2xl bg-[#27187E] flex items-center justify-center shadow-lg">
-              <img src="/logo.png" alt="Logo" className="h-8 w-8 object-contain" />
-           </div>
-        </Link>
-        
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-4">
-           <Building2 size={12} className="text-primary-600" />
-           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-600">
+    <>
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-3">
+           <Briefcase size={14} className="text-[#27187E]" />
+           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#27187E]">
              Organization Portal
            </p>
         </div>
-        <h2 className="text-3xl font-serif font-black text-slate-900 tracking-tight leading-tight">
-          Manage your pipeline
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+          Partner Login
         </h2>
         <p className="mt-2 text-sm text-slate-500 font-medium leading-relaxed">
-          The enterprise control center for talent acquisition.
+          Access your talent management dashboard.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-2">
-          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" htmlFor="email">
-            Corporate Email Address
-          </label>
-          <div className="relative group">
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. hiring@company.com"
-              className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white transition-all font-medium"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex justify-between items-center ml-1">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400" htmlFor="password">
-              Access Key
-            </label>
-            <button type="button" className="text-[10px] font-black uppercase tracking-widest text-primary-500 hover:text-primary-600 transition-colors">
-              Recover?
-            </button>
-          </div>
-          <div className="relative group">
-            <input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-5 py-4 pr-12 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white transition-all font-medium"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-primary-500 transition-colors"
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 ml-1">
-            <input type="checkbox" id="remember" className="w-4 h-4 rounded border-slate-200 text-primary-500 focus:ring-primary-500/20" />
-            <label htmlFor="remember" className="text-[11px] font-bold text-slate-400 uppercase tracking-widest cursor-pointer select-none">Secure Session</label>
-        </div>
-
-        {error && (
-          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 flex items-center gap-3 animate-in shake duration-500">
-            <p className="text-[11px] text-rose-600 font-bold uppercase tracking-tight leading-relaxed">{error}</p>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {(registrationSuccess || resetSuccess) && (
+          <div className="p-4 rounded-2xl bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center gap-3 animate-in bounce-in duration-1000">
+             <CheckCircle size={16} className="text-[#10b981]" />
+             <p className="text-[11px] text-[#10b981] font-bold uppercase tracking-tight text-center">
+               {registrationSuccess ? 'Company Onboarded Successfully!' : 'Password updated successfully!'}
+             </p>
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="group w-full flex justify-center items-center gap-3 px-6 py-4 rounded-2xl bg-[#27187E] text-[11px] font-black uppercase tracking-[0.2em] text-white hover:bg-primary-600 shadow-2xl shadow-primary-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition-all active:scale-95"
-        >
-          {loading ? 'Verifying...' : (
-            <>
-              Authorize Access <Lock size={14} className="group-hover:translate-x-1 transition-transform" />
-            </>
-          )}
-        </button>
+        <AuthInput
+          label="Organization Email"
+          id="email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="hr@enterprise.com"
+          error={error.includes('email') ? error : ''}
+        />
 
-        <div className="pt-10 space-y-8">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-100"></div>
-            </div>
-            <div className="relative flex justify-center">
-              <span className="px-4 bg-white text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">Need an account?</span>
-            </div>
+        <div className="space-y-1">
+          <AuthInput
+            label="Security Key"
+            id="password"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            error={error.includes('password') ? error : ''}
+          />
+        </div>
+
+        {error && !error.includes('email') && !error.includes('password') && (
+          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 animate-in shake duration-500">
+            <p className="text-[11px] text-rose-600 font-bold uppercase tracking-tight leading-relaxed text-center">{error}</p>
+          </div>
+        )}
+
+        <AuthButton loading={loading}>
+          Access Dashboard <Lock size={14} className="group-hover:translate-x-1 transition-transform" />
+        </AuthButton>
+
+        <div className="pt-8 space-y-6">
+          <div className="text-center">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">New enterprise?</p>
+            <Link 
+              to="/auth/company/register" 
+              className="group inline-flex items-center gap-2 text-sm font-bold text-[#27187E] hover:text-[#1C1064] transition-all"
+            >
+              Onboard your company <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
 
-          <Link 
-            to="/auth/company/register" 
-            className="w-full flex items-center justify-center py-4 rounded-2xl border-2 border-slate-100 text-[11px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 hover:border-slate-200 transition-all active:scale-95"
-          >
-            Register Organization
-          </Link>
-
-          <div className="text-center">
+          <div className="pt-6 border-t border-slate-50 text-center">
              <Link to="/auth/login" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 hover:text-primary-600 transition-colors">
-                Talent Access →
+                Candidate Access →
              </Link>
           </div>
         </div>
       </form>
-    </div>
+    </>
   );
 }
 
