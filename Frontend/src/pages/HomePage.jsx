@@ -73,7 +73,7 @@ function HomePage() {
                   Home2
                 </Link>
                 <Link
-                  to="/about"
+                  to="/"
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
                 >
                   About
