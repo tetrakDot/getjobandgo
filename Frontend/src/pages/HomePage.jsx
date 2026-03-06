@@ -72,12 +72,14 @@ function HomePage() {
                 <Link to="/" className="text-[#27187E]">
                   Home
                 </Link>
+                <span className="text-slate-300 cursor-default select-none">
+                  About
+                </span>
                 <Link
-                  // to="/about"
-                  to="/"
+                  to="/career-wall"
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
                 >
-                  About
+                  Career Wall
                 </Link>
                 <Link
                   to="/2ex"
@@ -149,21 +151,22 @@ function HomePage() {
                 >
                   Home <ChevronRight size={16} className="opacity-50" />
                 </Link>
+                <span className="text-slate-300 flex items-center justify-between cursor-default select-none">
+                  About <ChevronRight size={16} className="opacity-20" />
+                </span>
                 <Link
-                  // to="/about"
-                  to="/"
+                  to="/career-wall"
                   onClick={() => setIsMenuOpen(false)}
                   className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
                 >
-                  About <ChevronRight size={16} className="opacity-50" />
+                  Career Wall <ChevronRight size={16} className="opacity-50" />
                 </Link>
-
                 <Link
                   to="/2ex"
                   onClick={() => setIsMenuOpen(false)}
                   className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
                 >
-                  2eX Engine <ChevronRight size={16} className="opacity-50" />
+                  2eX AI <ChevronRight size={16} className="opacity-50" />
                 </Link>
                 <Link
                   to="/jobs"
@@ -528,7 +531,7 @@ function HomePage() {
                   />
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/sailendraprasath"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-[#27187E] transition-colors"

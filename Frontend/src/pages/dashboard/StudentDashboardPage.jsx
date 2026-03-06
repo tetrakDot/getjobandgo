@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Briefcase, CheckCircle2, Clock, XCircle, Search, ArrowRight, Building2 } from 'lucide-react';
 import { listMyApplications, getApplicationStats } from '../../services/applicationService';
+import { useAuth } from '../../hooks/useAuth';
+import MyCareerWallPosts from '../../components/dashboard/MyCareerWallPosts';
 
 const statusMap = {
   applied: { label: 'Applied', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100', icon: Clock },
@@ -87,6 +89,7 @@ function ApplicationTracker({ currentStatus }) {
 }
 
 function StudentDashboardPage() {
+  const { user } = useAuth();
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -219,6 +222,8 @@ function StudentDashboardPage() {
             </Link>
         )}
       </div>
+
+      <MyCareerWallPosts user={user} />
     </div>
   );
 }

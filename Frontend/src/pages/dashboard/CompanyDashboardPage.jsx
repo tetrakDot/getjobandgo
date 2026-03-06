@@ -11,6 +11,7 @@ import { listMyApplications, updateApplication, downloadResume, getApplicationSt
 import { useAuth } from '../../hooks/useAuth';
 import { trackJobPosting } from '../../utils/analytics';
 import { confirmAction } from '../../utils/confirmToast.jsx';
+import MyCareerWallPosts from '../../components/dashboard/MyCareerWallPosts';
 
 const statusConfig = {
   applied: { label: 'Applied', color: 'blue', icon: Clock },
@@ -468,6 +469,8 @@ function CompanyDashboardPage() {
           </div>
         </div>
       )}
+
+      <MyCareerWallPosts user={user} />
     </div>
   );
 }

@@ -62,7 +62,8 @@ function NeedHelpPage() {
             <div className="hidden lg:flex items-center gap-10">
               <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-widest">
                 <Link to="/" className="text-slate-400 hover:text-[#27187E] transition-colors">Home</Link>
-                <Link to="/about" className="text-slate-400 hover:text-[#27187E] transition-colors">About</Link>
+                <span className="text-slate-300 cursor-default select-none">About</span>
+                <Link to="/career-wall" className="text-slate-400 hover:text-[#27187E] transition-colors">Career Wall</Link>
                 <Link to="/2ex" className="text-slate-400 hover:text-[#27187E] transition-colors">2eX AI</Link>
                 <Link to="/jobs" className="text-slate-400 hover:text-[#27187E] transition-colors">Opportunities</Link>
                 <Link to="/help" className="text-[#27187E]">Need Help?</Link>
@@ -92,7 +93,10 @@ function NeedHelpPage() {
               {/* Similar to AboutPage Mobile Nav */}
               <div className="flex flex-col gap-8 text-sm font-black uppercase tracking-widest pb-10 border-b border-slate-100">
                 <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-slate-400">Home</Link>
-                <Link to="/about" onClick={() => setIsMenuOpen(false)} className="text-slate-400">About</Link>
+                <span className="text-slate-300 cursor-default select-none">About</span>
+                <Link to="/career-wall" onClick={() => setIsMenuOpen(false)} className="text-slate-400">Career Wall</Link>
+                <Link to="/2ex" onClick={() => setIsMenuOpen(false)} className="text-slate-400">2eX AI</Link>
+                <Link to="/jobs" onClick={() => setIsMenuOpen(false)} className="text-slate-400">Opportunities</Link>
                 <Link to="/help" onClick={() => setIsMenuOpen(false)} className="text-[#27187E]">Need Help?</Link>
               </div>
             </div>

@@ -66,6 +66,12 @@ function AboutPage() {
                   About
                 </Link>
                 <Link
+                  to="/career-wall"
+                  className="text-slate-400 hover:text-[#27187E] transition-colors"
+                >
+                  Career Wall
+                </Link>
+                <Link
                   to="/2ex"
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
                 >
@@ -141,6 +147,13 @@ function AboutPage() {
                   className="text-[#27187E] flex items-center justify-between"
                 >
                   About <ChevronRight size={16} className="opacity-50" />
+                </Link>
+                <Link
+                  to="/career-wall"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
+                >
+                  Career Wall <ChevronRight size={16} className="opacity-50" />
                 </Link>
                 <Link
                   to="/2ex"
