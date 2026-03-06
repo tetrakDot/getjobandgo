@@ -11,6 +11,82 @@ const statusMap = {
   rejected: { label: 'Rejected', color: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-100', icon: XCircle },
 };
 
+const STAGES = [
+  { id: 'applied', label: 'Applied' },
+  { id: 'under_review', label: 'In Review' },
+  { id: 'shortlisted', label: 'Shortlisted' },
+  { id: 'hired', label: 'Hired' }
+];
+
+function ApplicationTracker({ currentStatus }) {
+  const isRejected = currentStatus === 'rejected';
+  const currentIdx = STAGES.findIndex(s => s.id === currentStatus);
+
+  return (
+    <div className="w-full mt-6 pt-8 border-t border-slate-100 pb-4">
+      <div className="relative flex items-start w-full max-w-3xl mx-auto">
+        {/* Background Line */}
+        <div className="absolute left-[12.5%] right-[12.5%] top-4 -translate-y-1/2 h-1.5 bg-slate-100 rounded-full z-0"></div>
+        
+        {/* Fill Line */}
+        {!isRejected && currentIdx > 0 && (
+          <div className="absolute left-[12.5%] right-[12.5%] top-4 -translate-y-1/2 h-1.5 z-0">
+             <div 
+               className="h-full bg-primary-500 rounded-full transition-all duration-1000 ease-out"
+               style={{ width: `${(currentIdx / (STAGES.length - 1)) * 100}%` }}
+             ></div>
+          </div>
+        )}
+        
+        {/* Rejected Line */}
+        {isRejected && (
+          <div className="absolute left-[12.5%] right-[12.5%] top-4 -translate-y-1/2 h-1.5 bg-rose-200 rounded-full z-0"></div>
+        )}
+
+        {STAGES.map((stage, idx) => {
+          let state = 'pending';
+          if (isRejected) {
+             state = 'rejected';
+          } else if (idx < currentIdx) {
+             state = 'completed';
+          } else if (idx === currentIdx) {
+             state = 'active';
+          }
+
+          const isActiveOrCompleted = state === 'active' || state === 'completed';
+          // Show label on mobile only for active/rejected, on sm up show all
+          const showTextMobile = state === 'active' || (isRejected && idx === currentIdx);
+
+          return (
+            <div key={stage.id} className="relative z-10 flex flex-col items-center gap-4 flex-1 w-0">
+              <div className="h-8 flex items-center justify-center shrink-0">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center border-[3px] transition-all duration-500 bg-white ${
+                      state === 'completed' ? 'border-primary-500 bg-primary-500 text-white scale-[1.15] shadow-lg shadow-primary-500/30' :
+                      state === 'active' ? 'border-primary-500 text-primary-500 scale-[1.25] shadow-xl shadow-primary-500/20 ring-4 ring-primary-50' :
+                      state === 'rejected' ? 'border-rose-400 text-rose-500 bg-rose-50 scale-110 shadow-sm' :
+                      'border-slate-200 text-slate-300'
+                  }`}>
+                    {state === 'completed' && <CheckCircle2 size={16} strokeWidth={3} />}
+                    {state === 'active' && <div className="w-3 h-3 rounded-full bg-primary-500 animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite]" />}
+                    {state === 'rejected' && <XCircle size={16} strokeWidth={3} />}
+                    {state === 'pending' && <div className="w-2 h-2 rounded-full bg-slate-200" />}
+                  </div>
+              </div>
+              <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-center transition-colors duration-300 w-full px-1 ${
+                isActiveOrCompleted ? 'text-primary-700' :
+                state === 'rejected' ? 'text-rose-500' :
+                'text-slate-400'
+              } ${showTextMobile ? 'block' : 'hidden sm:block'}`}>
+                {stage.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +125,7 @@ function ApplicationsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-8">
         {applications.length === 0 ? (
           <div className="py-24 text-center bg-white rounded-[3rem] border border-dashed border-slate-200">
              <Briefcase size={56} className="mx-auto text-slate-200 mb-8" />
@@ -66,26 +142,26 @@ function ApplicationsPage() {
             return (
               <div
                 key={app.id}
-                className="group relative bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden hover:border-primary-200 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.02)]"
+                className="group relative bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden hover:border-primary-200 transition-all duration-500 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]"
               >
-                <div className="p-8 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div className="px-8 pt-8 pb-6 md:px-10 md:pt-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
                   <div className="flex items-start gap-8">
-                    <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+                    <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 shadow-inner">
                          <Building2 size={32} className="text-slate-400 group-hover:text-primary-500 transition-colors duration-500" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-slate-900 group-hover:text-primary-600 transition-colors uppercase tracking-tight duration-300">{app.job_title}</h3>
                       <p className="text-[11px] text-primary-600 font-black uppercase tracking-[0.2em] mt-2">{app.company_name}</p>
                       
-                      <div className="flex flex-wrap items-center gap-4 mt-6 text-[10px] font-black uppercase tracking-widest text-slate-400 px-6 py-2.5 bg-slate-50 rounded-full border border-slate-100 w-fit">
+                      <div className="flex flex-wrap items-center gap-4 mt-6 text-[10px] font-black uppercase tracking-widest text-slate-500 px-5 py-2.5 bg-slate-50 rounded-2xl border border-slate-100 w-fit">
                         <span className="flex items-center gap-2.5"><Clock size={14} className="text-primary-400"/> Applied on {new Date(app.applied_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-8">
-                    <div className="flex flex-col items-end gap-3 pr-8 border-r border-slate-100 hidden md:flex">
-                         <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-300">Application Status</p>
+                  <div className="flex items-center gap-8 md:self-stretch">
+                    <div className="flex flex-col items-end gap-3 pr-8 border-r border-slate-100 hidden md:flex justify-center h-full">
+                         <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-300">Current Status</p>
                          <div className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl border ${status.bg} ${status.color} ${status.border}`}>
                             <StatusIcon size={14} className="font-bold" />
                             <span className="text-[10px] font-black uppercase tracking-widest">{status.label}</span>
@@ -94,12 +170,16 @@ function ApplicationsPage() {
                     
                     <Link 
                         to={`/jobs/${app.job}`}
-                        className="w-full md:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl text-center transition-all border border-slate-100 active:scale-95 shadow-sm"
+                        className="w-full md:w-auto px-8 py-4 bg-white hover:bg-primary-50 hover:text-primary-700 text-slate-900 text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl text-center flex items-center justify-center transition-all border border-slate-200 hover:border-primary-200 active:scale-95 shadow-sm h-fit self-center"
                     >
-                        View Profile
+                        View Job Details
                     </Link>
                   </div>
                 </div>
+
+                {/* Progress Tracker Inserted Here */}
+                <ApplicationTracker currentStatus={app.status} />
+
               </div>
             );
           })
@@ -110,3 +190,4 @@ function ApplicationsPage() {
 }
 
 export default ApplicationsPage;
+

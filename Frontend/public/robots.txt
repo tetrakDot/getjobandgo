@@ -1,9 +1,11 @@
 User-agent: *
+
 Allow: /
-Allow: /jobs/
-Allow: /companies/
+
 Disallow: /admin/
 Disallow: /auth/
 Disallow: /api/
+Disallow: /login
+Disallow: /register
 
 Sitemap: https://getjobandgo.com/sitemap.xml

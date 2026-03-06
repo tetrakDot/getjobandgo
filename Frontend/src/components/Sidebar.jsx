@@ -135,7 +135,7 @@ function Sidebar({ isOpen, onClose }) {
                 />
                 <NavItem
                   to="/student/profile"
-                  label="Resumé / profile"
+                  label="Resume / profile"
                   icon={UserCircle}
                 />
                 <NavItem
