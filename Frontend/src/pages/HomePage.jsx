@@ -70,7 +70,13 @@ function HomePage() {
             <div className="hidden lg:flex items-center gap-10">
               <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-widest">
                 <Link to="/" className="text-[#27187E]">
-                  Home
+                  Home2
+                </Link>
+                <Link
+                  to="/about"
+                  className="text-slate-400 hover:text-[#27187E] transition-colors"
+                >
+                  About
                 </Link>
                 <Link
                   to="/2ex"
@@ -135,6 +141,13 @@ function HomePage() {
                   className="text-[#27187E] flex items-center justify-between"
                 >
                   Home <ChevronRight size={16} className="opacity-50" />
+                </Link>
+                <Link
+                  to="/about"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
+                >
+                  About <ChevronRight size={16} className="opacity-50" />
                 </Link>
                 <Link
                   to="/2ex"
@@ -499,7 +512,9 @@ function HomePage() {
                   />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/sailendraprasath"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-[#27187E] transition-colors"
                 >
                   LinkedIn{" "}

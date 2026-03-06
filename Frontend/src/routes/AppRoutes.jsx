@@ -24,12 +24,14 @@ import StudentProfilePage from "../pages/students/StudentProfilePage";
 import AiResumeEvaluator from "../pages/AiResumeEvaluator";
 import PremiumPage from "../pages/PremiumPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import AboutPage from "../pages/AboutPage";
 
 function AppRoutes() {
   return (
     <Routes>
       {/* Public Landing (No Sidebar) */}
       <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
 
       {/* Auth Routes (No Sidebar) */}
       <Route element={<AuthLayout />}>
