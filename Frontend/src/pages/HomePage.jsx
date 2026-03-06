@@ -73,8 +73,8 @@ function HomePage() {
                   Home
                 </Link>
                 <Link
-                  to="/2ex"
                   // to="/about"
+                  to="/"
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
                 >
                   About
@@ -90,6 +90,12 @@ function HomePage() {
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
                 >
                   Opportunities
+                </Link>
+                <Link
+                  to="/help"
+                  className="text-slate-400 hover:text-[#27187E] transition-colors"
+                >
+                  Need Help?
                 </Link>
               </div>
 
@@ -144,12 +150,14 @@ function HomePage() {
                   Home <ChevronRight size={16} className="opacity-50" />
                 </Link>
                 <Link
-                  to="/about"
+                  // to="/about"
+                  to="/"
                   onClick={() => setIsMenuOpen(false)}
                   className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
                 >
                   About <ChevronRight size={16} className="opacity-50" />
                 </Link>
+
                 <Link
                   to="/2ex"
                   onClick={() => setIsMenuOpen(false)}
@@ -164,6 +172,13 @@ function HomePage() {
                 >
                   Opportunities{" "}
                   <ChevronRight size={16} className="opacity-50" />
+                </Link>
+                <Link
+                  to="/help"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
+                >
+                  Need Help? <ChevronRight size={16} className="opacity-50" />
                 </Link>
               </div>
 

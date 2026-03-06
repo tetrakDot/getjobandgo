@@ -9,13 +9,14 @@ from apps.students.views import StudentViewSet
 from apps.companies.views import CompanyViewSet
 from apps.jobs.views import JobViewSet
 from apps.applications.views import ApplicationViewSet
-from apps.reports.views import DashboardStatsView
+from apps.reports.views import DashboardStatsView, HelpRequestViewSet
 
 router = DefaultRouter()
 router.register(r'students', StudentViewSet, basename='student')
 router.register(r'companies', CompanyViewSet, basename='company')
 router.register(r'jobs', JobViewSet, basename='job')
 router.register(r'applications', ApplicationViewSet, basename='application')
+router.register(r'help', HelpRequestViewSet, basename='help')
 from django.conf import settings
 from django.conf.urls.static import static
 

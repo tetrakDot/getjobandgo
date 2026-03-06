@@ -81,7 +81,27 @@ function StudentsListPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('latest');
   const [featuredStudents, setFeaturedStudents] = useState([]);
-  const [allFetched, setAllFetched] = useState(false);
+  const isSearching = searchQuery !== "" || sortBy !== "latest";
+
+  useEffect(() => {
+    if (isSearching) {
+      setLoadingAll(true);
+      const timer = setTimeout(() => {
+        const params = {};
+        if (searchQuery) params.search = searchQuery;
+        if (sortBy === "latest") params.ordering = "-created_at";
+        else if (sortBy === "name") params.ordering = "full_name";
+
+        listStudents(params)
+          .then((data) => setStudents(data.results ?? data))
+          .catch((err) => console.error(err))
+          .finally(() => setLoadingAll(false));
+      }, 400);
+      return () => clearTimeout(timer);
+    } else {
+      setStudents([]);
+    }
+  }, [searchQuery, sortBy, isSearching]);
 
   useEffect(() => {
     // Fetch only 6 random featured students initially
@@ -95,39 +115,9 @@ function StudentsListPage() {
 
   const handleSearch = (value) => {
     setSearchQuery(value);
-    if (value && !allFetched) {
-      setLoadingAll(true);
-      listStudents()
-        .then((data) => {
-          setStudents(data.results ?? data);
-          setAllFetched(true);
-        })
-        .catch((err) => console.error(err))
-        .finally(() => setLoadingAll(false));
-    }
   };
 
-  const getFilteredAndSortedStudents = () => {
-    let result = [...students];
-
-    if (searchQuery) {
-      result = result.filter(student => 
-        student.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        student.skills?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.education?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    if (sortBy === 'latest') {
-      result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    } else if (sortBy === 'name') {
-      result.sort((a, b) => (a.full_name || '').localeCompare(b.full_name || ''));
-    }
-
-    return result;
-  };
-
-  const filteredStudents = getFilteredAndSortedStudents();
+  const filteredStudents = students;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -169,7 +159,7 @@ function StudentsListPage() {
           <Loader2 className="animate-spin text-primary-500 w-12 h-12" />
           <p className="text-sm text-slate-500 font-medium tracking-tight">Curating top talent...</p>
         </div>
-      ) : searchQuery ? (
+      ) : isSearching ? (
         /* ─── SEARCH RESULTS VIEW ─── */
         <div className="space-y-6 pb-12">
           <div className="flex items-center justify-between flex-wrap gap-4">

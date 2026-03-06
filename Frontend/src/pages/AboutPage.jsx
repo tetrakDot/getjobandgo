@@ -40,7 +40,8 @@ function AboutPage() {
                 <img
                   src="/logo.png"
                   alt="Get Job And Go Logo"
-                  className="w-7 h-7 md:w-8 md:h-8 object-contain rounded-lg"
+                  draggable="false"
+                  className="w-7 h-7 md:w-8 md:h-8 object-contain rounded-lg select-none"
                 />
               </div>
               <span className="text-xl md:text-2xl font-serif font-black tracking-tight text-[#27187E]">
@@ -75,6 +76,12 @@ function AboutPage() {
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
                 >
                   Opportunities
+                </Link>
+                <Link
+                  to="/help"
+                  className="text-slate-400 hover:text-[#27187E] transition-colors"
+                >
+                  Need Help?
                 </Link>
               </div>
 
@@ -149,6 +156,13 @@ function AboutPage() {
                 >
                   Opportunities{" "}
                   <ChevronRight size={16} className="opacity-50" />
+                </Link>
+                <Link
+                  to="/help"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
+                >
+                  Need Help? <ChevronRight size={16} className="opacity-50" />
                 </Link>
               </div>
 
@@ -322,7 +336,8 @@ function AboutPage() {
                 <img
                   src="/founder.jpg"
                   alt="Sailendra Prasath N"
-                  className="relative z-10 rounded-[3rem] shadow-2xl w-full object-cover border-4 border-white aspect-[4/5]"
+                  draggable="false"
+                  className="relative z-10 rounded-[3rem] shadow-2xl w-full object-cover border-4 border-white aspect-[4/5] select-none pointer-events-none"
                 />
               </div>
               <div>
@@ -402,7 +417,8 @@ function AboutPage() {
                     <img
                       src="/logo.png"
                       alt="Get Job And Go Logo"
-                      className="w-5 h-5 object-contain"
+                      draggable="false"
+                      className="w-5 h-5 object-contain select-none"
                     />
                   </div>
                   <span className="text-base font-serif font-black text-slate-900">

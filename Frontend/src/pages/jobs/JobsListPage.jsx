@@ -89,17 +89,38 @@ function JobsListPage() {
   const [filterType, setFilterType] = useState("all");
   const [sortBy, setSortBy] = useState("latest");
   const [featuredJobs, setFeaturedJobs] = useState([]);
-  const [allFetched, setAllFetched] = useState(false);
+  const isSearching = searchQuery !== "" || filterType !== "all" || sortBy !== "latest";
 
-  // Track search in analytics
   useEffect(() => {
+    // Track search in analytics
     if (searchQuery.trim().length > 2) {
-      const timer = setTimeout(() => {
+      const analyticsTimer = setTimeout(() => {
         trackJobSearch(searchQuery);
       }, 1000);
-      return () => clearTimeout(timer);
+      return () => clearTimeout(analyticsTimer);
     }
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (isSearching) {
+      setLoadingAll(true);
+      const timer = setTimeout(() => {
+        const params = {};
+        if (searchQuery) params.search = searchQuery;
+        if (filterType !== "all") params.job_type = filterType;
+        if (sortBy === "latest") params.ordering = "-created_at";
+        else if (sortBy === "salary-desc") params.ordering = "-salary";
+
+        listJobs(params)
+          .then((data) => setJobs(data.results ?? data))
+          .catch((err) => console.error(err))
+          .finally(() => setLoadingAll(false));
+      }, 400); // Debounce API calls
+      return () => clearTimeout(timer);
+    } else {
+      setJobs([]);
+    }
+  }, [searchQuery, filterType, sortBy, isSearching]);
 
   // Load only 6 random featured jobs on mount
   useEffect(() => {
@@ -109,58 +130,11 @@ function JobsListPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Lazy-load all jobs the first time user types
   const handleSearch = (value) => {
     setSearchQuery(value);
-    if (value && !allFetched) {
-      setLoadingAll(true);
-      listJobs()
-        .then((data) => {
-          setJobs(data.results ?? data);
-          setAllFetched(true);
-        })
-        .catch((err) => console.error(err))
-        .finally(() => setLoadingAll(false));
-    }
   };
 
-  // Apply filter and sort to search results
-  const getFilteredJobs = () => {
-    let result = [...jobs];
-
-    if (searchQuery) {
-      result = result.filter(
-        (job) =>
-          job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.company_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.description?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    if (filterType !== "all") {
-      result = result.filter((job) => job.job_type === filterType);
-    }
-
-    if (sortBy === "latest") {
-      result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    } else if (sortBy === "salary-desc") {
-      result.sort((a, b) => {
-        const salaryA = parseFloat(a.salary?.toString().replace(/[^0-9.]/g, "") || 0);
-        const salaryB = parseFloat(b.salary?.toString().replace(/[^0-9.]/g, "") || 0);
-        return salaryB - salaryA;
-      });
-    }
-
-    return result;
-  };
-
-  // Filter featured jobs too (for type filter while on default view)
-  const filteredFeatured = filterType === "all"
-    ? featuredJobs
-    : featuredJobs.filter((j) => j.job_type === filterType);
-
-  const filteredJobs = getFilteredJobs();
+  const filteredJobs = jobs;
 
   return (
     <>
@@ -250,7 +224,7 @@ function JobsListPage() {
             <Loader2 className="animate-spin text-primary-500 w-12 h-12" />
             <p className="text-sm text-slate-500 font-medium tracking-tight">Scanning for opportunities...</p>
           </div>
-        ) : searchQuery ? (
+        ) : isSearching ? (
           /* ─── SEARCH RESULTS VIEW ─── */
           <div className="space-y-6 pb-12">
             <div className="flex items-center justify-between flex-wrap gap-3">
@@ -314,9 +288,9 @@ function JobsListPage() {
               </span>
             </div>
 
-            {filteredFeatured.length > 0 ? (
+            {featuredJobs.length > 0 ? (
               <div className="grid gap-4">
-                {filteredFeatured.map((job) => (
+                {featuredJobs.map((job) => (
                   <JobCard key={job.id} job={job} isFeatured />
                 ))}
               </div>
@@ -324,7 +298,7 @@ function JobsListPage() {
               <div className="flex flex-col items-center justify-center py-16 bg-white rounded-3xl border border-dashed border-slate-200">
                 <Briefcase size={32} className="text-slate-200 mb-3" />
                 <p className="text-sm text-slate-400 font-bold uppercase tracking-widest">
-                  No {filterType === "intern" ? "internships" : "full-time roles"} right now
+                  No roles right now
                 </p>
               </div>
             )}

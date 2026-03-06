@@ -1,3 +1,4 @@
+from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
@@ -78,3 +79,18 @@ class DashboardStatsView(APIView):
             "page_visits": page_visits,
         }
         return Response(data)
+
+
+from .models import HelpRequest
+from .serializers import HelpRequestSerializer
+
+class HelpRequestViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for submitting Help Requests.
+    Only allows logged-in users to POST a new request.
+    """
+    queryset = HelpRequest.objects.all()
+    serializer_class = HelpRequestSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ['post']
+

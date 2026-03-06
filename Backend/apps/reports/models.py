@@ -30,3 +30,17 @@ class CompanyVerificationAuditLog(UUIDBaseModel):
     def __str__(self) -> str:
         return f"{self.company.company_name}: {self.previous_status} -> {self.new_status}"
 
+
+class HelpRequest(UUIDBaseModel):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    description = models.TextField()
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"HelpRequest from {self.name} ({self.email})"
+

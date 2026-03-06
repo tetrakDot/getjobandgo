@@ -69,6 +69,26 @@ function CompaniesListPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [featuredCompanies, setFeaturedCompanies] = useState([]);
 
+  const isSearching = searchQuery !== "";
+
+  useEffect(() => {
+    if (isSearching) {
+      setLoadingAll(true);
+      const timer = setTimeout(() => {
+        const params = {};
+        if (searchQuery) params.search = searchQuery;
+
+        listCompanies(params)
+          .then((data) => setCompanies(data.results ?? data))
+          .catch((err) => console.error(err))
+          .finally(() => setLoadingAll(false));
+      }, 400);
+      return () => clearTimeout(timer);
+    } else {
+      setCompanies([]);
+    }
+  }, [searchQuery, isSearching]);
+
   useEffect(() => {
     // Fetch 6 random featured companies for default view
     listCompanies({ random: 6 })
@@ -79,27 +99,11 @@ function CompaniesListPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // When user starts typing, fetch all companies (lazily, only once)
-  const [allFetched, setAllFetched] = useState(false);
   const handleSearch = (value) => {
     setSearchQuery(value);
-    if (value && !allFetched) {
-      setLoadingAll(true);
-      listCompanies()
-        .then((data) => {
-          setCompanies(data.results ?? data);
-          setAllFetched(true);
-        })
-        .catch((err) => console.error(err))
-        .finally(() => setLoadingAll(false));
-    }
   };
 
-  const filteredCompanies = companies.filter(company => 
-    company.company_name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    company.company_type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    company.company_description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredCompanies = companies;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -141,7 +145,7 @@ function CompaniesListPage() {
           <Loader2 className="animate-spin text-primary-500 w-10 h-10" />
           <p className="text-sm text-slate-500 font-medium tracking-tight">Loading partner network...</p>
         </div>
-      ) : searchQuery ? (
+      ) : isSearching ? (
         /* ─── SEARCH RESULTS VIEW ─── */
         <div className="space-y-6 pb-12">
           <div className="flex items-center justify-between">

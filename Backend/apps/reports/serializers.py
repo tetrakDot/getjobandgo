@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import HelpRequest
 
 
 class DashboardStatsSerializer(serializers.Serializer):
@@ -18,4 +19,11 @@ class DashboardReportSerializer(serializers.Serializer):
     stats = DashboardStatsSerializer()
     company_growth = MonthlyGrowthPointSerializer(many=True)
     applications_growth = MonthlyGrowthPointSerializer(many=True)
+
+
+class HelpRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HelpRequest
+        fields = ['id', 'name', 'email', 'description', 'created_at']
+        read_only_fields = ['id', 'created_at']
 

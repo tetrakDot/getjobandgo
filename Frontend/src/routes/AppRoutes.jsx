@@ -25,6 +25,7 @@ import AiResumeEvaluator from "../pages/AiResumeEvaluator";
 import PremiumPage from "../pages/PremiumPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AboutPage from "../pages/AboutPage";
+import NeedHelpPage from "../pages/NeedHelpPage";
 
 function AppRoutes() {
   return (
@@ -32,6 +33,7 @@ function AppRoutes() {
       {/* Public Landing (No Sidebar) */}
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/help" element={<NeedHelpPage />} />
 
       {/* Auth Routes (No Sidebar) */}
       <Route element={<AuthLayout />}>
