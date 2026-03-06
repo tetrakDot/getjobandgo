@@ -323,6 +323,7 @@ const ActivityLogs = () => {
             <option value="all">All Operations</option>
             <option value="login">Authentications</option>
             <option value="logout">Terminations</option>
+            <option value="visit">Site Visits</option>
           </select>
         </div>
 
@@ -375,7 +376,14 @@ const ActivityLogs = () => {
                       <td className="px-8 py-6">
                         <div className="flex flex-col">
                           <span className="text-sm font-bold text-white mb-0.5">{log.user_email}</span>
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{log.user_role}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                            {log.user_role}
+                            {log.action === 'visit' && log.path && (
+                              <span className="ml-2 px-1.5 py-0.5 rounded-md bg-white/10 text-slate-300 normal-case tracking-normal">
+                                {log.path}
+                              </span>
+                            )}
+                          </span>
                         </div>
                       </td>
                       <td className="px-8 py-6">

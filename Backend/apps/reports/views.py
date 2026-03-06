@@ -29,12 +29,20 @@ class DashboardStatsView(APIView):
         logout_count = UserActivity.objects.filter(action='logout').count()
 
         # Geographical breakdown (Students)
-        student_geo = Student.objects.values('country').annotate(count=Count('id')).order_by('-count')[:5]
-        student_geo_list = [{"name": (g['country'] if g['country'] else "Unknown"), "count": g['count']} for g in student_geo]
+        student_geo = Student.objects.values('country', 'state', 'district').annotate(count=Count('id')).order_by('-count')[:5]
+        student_geo_list = []
+        for g in student_geo:
+            parts = [str(p).strip() for p in [g.get('district'), g.get('state'), g.get('country')] if p and str(p).strip()]
+            name = ", ".join(parts) if parts else "Unknown"
+            student_geo_list.append({"name": name, "count": g['count']})
 
         # Geographical breakdown (Companies)
-        company_geo = Company.objects.values('country').annotate(count=Count('id')).order_by('-count')[:5]
-        company_geo_list = [{"name": (g['country'] if g['country'] else "Unknown"), "count": g['count']} for g in company_geo]
+        company_geo = Company.objects.values('country', 'state', 'district').annotate(count=Count('id')).order_by('-count')[:5]
+        company_geo_list = []
+        for g in company_geo:
+            parts = [str(p).strip() for p in [g.get('district'), g.get('state'), g.get('country')] if p and str(p).strip()]
+            name = ", ".join(parts) if parts else "Unknown"
+            company_geo_list.append({"name": name, "count": g['count']})
 
         # Group companies by month
         company_months = Company.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(c=Count('id')).order_by('month')[:6]
@@ -51,6 +59,10 @@ class DashboardStatsView(APIView):
         if not applications_growth:
              applications_growth = [{"name": month, "count": 0} for month in month_names[:6]]
 
+        # Page visits
+        page_visits_qs = UserActivity.objects.filter(action='visit').exclude(path__isnull=True).exclude(path='Unknown').values('path').annotate(count=Count('id')).order_by('-count')[:5]
+        page_visits = [{"name": v['path'], "count": v['count']} for v in page_visits_qs]
+
         data = {
             "total_students": total_students,
             "total_companies": total_companies,
@@ -63,5 +75,6 @@ class DashboardStatsView(APIView):
             "company_geo": company_geo_list,
             "company_growth": company_growth,
             "applications_growth": applications_growth,
+            "page_visits": page_visits,
         }
         return Response(data)

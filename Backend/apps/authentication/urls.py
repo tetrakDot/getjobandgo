@@ -11,7 +11,8 @@ from .views import (
     UserActivityClearAllView,
     ForgotPasswordView,
     VerifyOTPView,
-    ResetPasswordView
+    ResetPasswordView,
+    LogVisitView,
 )
 
 urlpatterns = [
@@ -20,6 +21,7 @@ urlpatterns = [
     path("me/", MeView.as_view(), name="me"),
     path("password/", PasswordChangeView.as_view(), name="change_password"),
     path("logout/", LogoutView.as_view(), name="logout"),
+    path("log_visit/", LogVisitView.as_view(), name="log_visit"),
     path("activities/", UserActivityListView.as_view(), name="user_activities"),
     path("activities/<int:pk>/", UserActivityDetailView.as_view(), name="user_activity_detail"),
     path("activities/clear-all/", UserActivityClearAllView.as_view(), name="clear_all_activities"),

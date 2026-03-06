@@ -94,8 +94,9 @@ class PasswordResetOTP(models.Model):
 
 
 class UserActivity(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="activities")
-    action = models.CharField(max_length=50) # login, logout
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="activities", null=True, blank=True)
+    action = models.CharField(max_length=50) # login, logout, visit
+    path = models.CharField(max_length=255, null=True, blank=True)  # Store specific page visited
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     user_agent = models.TextField(null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)

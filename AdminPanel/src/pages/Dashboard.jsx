@@ -214,6 +214,7 @@ const Dashboard = () => {
     company_geo: [],
     company_growth: [],
     applications_growth: [],
+    page_visits: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -236,6 +237,7 @@ const Dashboard = () => {
           company_geo: [],
           company_growth: [],
           applications_growth: [],
+          page_visits: [],
         });
       } finally {
         setLoading(false);
@@ -701,6 +703,34 @@ const Dashboard = () => {
                   />
                   <Tooltip content={<CustomTooltip accent="#a78bfa" />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
                   <Bar dataKey="count" fill="#a78bfa" radius={[0, 4, 4, 0]} barSize={20} />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartCard>
+
+            <ChartCard
+              title="Most Visited Pages"
+              subtitle="Popular destinations on platform"
+              badge="Traffic"
+              badgeColor="#34d399"
+              delay={700}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  layout="vertical"
+                  data={stats.page_visits}
+                  margin={{ top: 8, right: 30, left: 60, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="rgba(255,255,255,0.04)" />
+                  <XAxis type="number" hide />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    axisLine={false} 
+                    tickLine={false}
+                    tick={{ fill: "rgba(148,163,184,0.7)", fontSize: 11, fontWeight: 500 }}
+                  />
+                  <Tooltip content={<CustomTooltip accent="#34d399" />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+                  <Bar dataKey="count" fill="#34d399" radius={[0, 4, 4, 0]} barSize={20} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartCard>

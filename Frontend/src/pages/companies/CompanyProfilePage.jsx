@@ -60,6 +60,15 @@ function CompanyProfilePage() {
       setSuccess('Company profile updated successfully!');
     } catch (err) {
       console.error(err);
+      if (err.response && err.response.data && typeof err.response.data === 'object') {
+        const errorData = err.response.data;
+        const firstKey = Object.keys(errorData)[0];
+        if (firstKey) {
+          const msg = Array.isArray(errorData[firstKey]) ? errorData[firstKey][0] : errorData[firstKey];
+          toast.error(`${firstKey}: ${msg}`);
+          return;
+        }
+      }
       toast.error('Error updating profile.');
     } finally {
       setSaving(false);

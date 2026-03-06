@@ -63,6 +63,29 @@ class LogoutView(generics.GenericAPIView):
         return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
 
 
+class LogVisitView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+            
+        user = request.user if request.user.is_authenticated else None
+        path = request.data.get('path', 'Unknown')
+
+        UserActivity.objects.create(
+            user=user,
+            action="visit",
+            path=path,
+            ip_address=ip,
+            user_agent=request.META.get('HTTP_USER_AGENT')
+        )
+        return Response({"detail": "Visit logged."}, status=status.HTTP_200_OK)
+
+
 class UserActivityListView(generics.ListAPIView):
     queryset = UserActivity.objects.all()
     serializer_class = UserActivitySerializer

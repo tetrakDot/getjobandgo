@@ -91,6 +91,15 @@ function StudentProfilePage() {
       setResumeFile(null);
     } catch (err) {
       console.error(err);
+      if (err.response && err.response.data && typeof err.response.data === 'object') {
+        const errorData = err.response.data;
+        const firstKey = Object.keys(errorData)[0];
+        if (firstKey) {
+          const msg = Array.isArray(errorData[firstKey]) ? errorData[firstKey][0] : errorData[firstKey];
+          toast.error(`${firstKey}: ${msg}`);
+          return;
+        }
+      }
       toast.error('Failed to update profile changes.');
     } finally {
       setSaving(false);

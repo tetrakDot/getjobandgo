@@ -34,7 +34,7 @@ const Evaluations = () => {
     setLoading(true);
     try {
       const response = await evaluatorService.getEvaluations();
-      setEvaluations(response.data);
+      setEvaluations(response.data.results || response.data || []);
     } catch (error) {
       console.error("Error fetching evaluations:", error);
       toast.error("Failed to load evaluations");

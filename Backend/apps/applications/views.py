@@ -1,5 +1,6 @@
 from rest_framework import permissions, viewsets
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.response import Response
 
 from apps.authentication.models import UserRole
 from apps.authentication.permissions import IsAdmin

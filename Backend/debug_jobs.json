@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Frontend Developer",
+    "is_active": true,
+    "company__user__email": "sailuhema6419@gmail.com"
+  },
+  {
+    "title": "Frontend Developer",
+    "is_active": true,
+    "company__user__email": "company@gmail.com"
+  }
+]

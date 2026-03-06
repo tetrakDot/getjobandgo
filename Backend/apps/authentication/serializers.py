@@ -63,13 +63,19 @@ class PasswordChangeSerializer(serializers.Serializer):
         return user
 
 class UserActivitySerializer(serializers.ModelSerializer):
-    user_email = serializers.EmailField(source='user.email', read_only=True)
-    user_role = serializers.CharField(source='user.role', read_only=True)
+    user_email = serializers.SerializerMethodField()
+    user_role = serializers.SerializerMethodField()
 
     class Meta:
         model = UserActivity
-        fields = ("id", "user", "user_email", "user_role", "action", "ip_address", "user_agent", "timestamp")
+        fields = ("id", "user", "user_email", "user_role", "action", "path", "ip_address", "user_agent", "timestamp")
         read_only_fields = ("id", "timestamp")
+
+    def get_user_email(self, obj):
+        return obj.user.email if obj.user else "Anonymous"
+
+    def get_user_role(self, obj):
+        return obj.user.role if obj.user else "visitor"
 
 
 class ForgotPasswordSerializer(serializers.Serializer):
