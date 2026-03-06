@@ -70,10 +70,11 @@ function HomePage() {
             <div className="hidden lg:flex items-center gap-10">
               <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-widest">
                 <Link to="/" className="text-[#27187E]">
-                  Home2
+                  Home click
                 </Link>
                 <Link
                   to="/"
+                  // to="/about"
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
                 >
                   About

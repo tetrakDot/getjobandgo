@@ -11,8 +11,8 @@ from .serializers import JobSerializer
 class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.select_related("company", "company__user").all()
     serializer_class = JobSerializer
-    filterset_fields = ("is_active", "location", "company")
-    search_fields = ("title", "description", "company__company_name")
+    filterset_fields = ("is_active", "location", "company", "job_type")
+    search_fields = ("title", "description", "company__company_name", "location")
     ordering_fields = ("created_at", "title", "salary")
     
     lookup_field = "id"

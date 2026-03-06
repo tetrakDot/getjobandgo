@@ -21,7 +21,7 @@ class StudentViewSet(
 ):
     queryset = Student.objects.select_related("user").all()
     filterset_fields = ("created_at", "verification_status")
-    search_fields = ("full_name", "user__email", "skills")
+    search_fields = ("full_name", "user__email", "skills", "education")
     ordering_fields = ("created_at", "full_name")
     
     lookup_field = "id"
