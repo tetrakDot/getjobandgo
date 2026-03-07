@@ -339,7 +339,7 @@ function AboutPage() {
           </section>
 
           {/* Founder Section */}
-          <section className="py-32 bg-white relative overflow-hidden">
+          {/* <section className="py-32 bg-white relative overflow-hidden">
             <div className="absolute top-1/2 left-0 w-full h-full bg-slate-50 -skew-y-3 origin-top-left -z-10" />
 
             <div className="max-w-6xl mx-auto px-6 md:px-12 grid md:grid-cols-2 gap-16 items-center">
@@ -397,7 +397,7 @@ function AboutPage() {
                 </a>
               </div>
             </div>
-          </section>
+          </section> */}
 
           {/* Philosophy Section */}
           <section className="py-32 bg-[#27187E] text-center relative overflow-hidden">
