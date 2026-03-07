@@ -11,6 +11,9 @@ import {
   Building2,
   X,
   Sparkles,
+  Info,
+  HelpCircle,
+  Trophy,
 } from "lucide-react";
 
 function NavItem({ to, label, icon: Icon, end = false }) {
@@ -115,6 +118,13 @@ function Sidebar({ isOpen, onClose }) {
                 icon={Sparkles}
               />
               <NavItem to="/jobs" label="Open Roles" icon={Briefcase} />
+              <NavItem
+                to="/career-wall"
+                label="Career Wall"
+                icon={Trophy}
+              />
+              <NavItem to="/about" label="About Us" icon={Info} />
+              <NavItem to="/help" label="Need Help?" icon={HelpCircle} />
             </div>
           </div>
 

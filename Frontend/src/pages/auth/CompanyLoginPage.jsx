@@ -6,6 +6,7 @@ import { trackLogin } from '../../utils/analytics';
 import { ShieldCheck, Lock, ArrowRight, Briefcase, CheckCircle } from 'lucide-react';
 import AuthInput from '../../components/auth/AuthInput';
 import AuthButton from '../../components/auth/AuthButton';
+import SEO from '../../SEO';
 
 function CompanyLoginPage() {
   const navigate = useNavigate();
@@ -46,6 +47,11 @@ function CompanyLoginPage() {
 
   return (
     <>
+      <SEO 
+        title="Organization Login | GetJobAndGo"
+        description="Login to your GetJobAndGo organization account to post jobs and manage candidate applications."
+        canonical="https://getjobandgo.com/auth/company/login"
+      />
       <div className="text-center mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-3">
            <Briefcase size={14} className="text-[#27187E]" />

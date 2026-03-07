@@ -354,6 +354,18 @@ function AboutPage() {
                 />
               </div>
               <div>
+                <div className="mb-12 relative group">
+                  <div className="absolute -left-4 top-0 w-1 h-full bg-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <blockquote className="text-2xl md:text-3xl font-serif font-black text-[#27187E] leading-tight tracking-tight mb-4">
+                    “I Don’t Chase Ideas. <br />
+                    I Study Problems. <br />
+                    Solutions Build the Future.”
+                  </blockquote>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+                    ~ Sailesh (Sailendra Prasath N)
+                  </p>
+                </div>
+
                 <div className="mb-8">
                   <h2 className="text-4xl md:text-6xl font-serif font-black text-slate-900 mb-2">
                     Sailendra Prasath N

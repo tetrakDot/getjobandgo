@@ -5,6 +5,7 @@ import { trackRegistration } from '../../utils/analytics';
 import { ShieldCheck, UserPlus, ArrowRight } from 'lucide-react';
 import AuthInput from '../../components/auth/AuthInput';
 import AuthButton from '../../components/auth/AuthButton';
+import SEO from '../../SEO';
 
 function StudentRegisterPage() {
   const navigate = useNavigate();
@@ -70,6 +71,11 @@ function StudentRegisterPage() {
 
   return (
     <>
+      <SEO 
+        title="Candidate Registration | GetJobAndGo"
+        description="Create a candidate account on GetJobAndGo to start your journey towards premium career opportunities."
+        canonical="https://getjobandgo.com/auth/register"
+      />
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-4">
            <UserPlus size={14} className="text-[#27187E]" />

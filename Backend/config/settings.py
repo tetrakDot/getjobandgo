@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "apps.applications",
     "apps.reports",
     "apps.evaluator",
+    "apps.community",
 ]
 
 MIDDLEWARE = [

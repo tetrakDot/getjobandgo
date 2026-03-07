@@ -4,6 +4,7 @@ import { resetPassword } from '../../services/authService';
 import { Lock, ArrowLeft, CheckCircle } from 'lucide-react';
 import AuthInput from '../../components/auth/AuthInput';
 import AuthButton from '../../components/auth/AuthButton';
+import SEO from '../../SEO';
 
 function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -48,6 +49,11 @@ function ResetPasswordPage() {
 
   return (
     <>
+      <SEO 
+        title="Reset Password | Secure Recovery | GetJobAndGo"
+        description="Set a new secure password for your GetJobAndGo account."
+        canonical="https://getjobandgo.com/auth/reset-password"
+      />
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10b981]/5 border border-[#10b981]/20 mb-4">
            <Lock size={14} className="text-[#10b981]" />

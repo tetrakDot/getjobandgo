@@ -24,6 +24,6 @@ class DashboardReportSerializer(serializers.Serializer):
 class HelpRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = HelpRequest
-        fields = ['id', 'name', 'email', 'description', 'created_at']
+        fields = ['id', 'name', 'email', 'description', 'is_resolved', 'created_at']
         read_only_fields = ['id', 'created_at']
 

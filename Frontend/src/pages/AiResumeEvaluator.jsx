@@ -11,7 +11,7 @@ import { useAuth } from "../hooks/useAuth";
 import { trackResumeUpload } from "../utils/analytics";
 import { toast } from "react-toastify";
 
-const MAX_FREE_USES = 3;
+const MAX_FREE_USES = 10;
 
 function getUsageKey(userId) {
   return `2ex_usage_${userId}`;

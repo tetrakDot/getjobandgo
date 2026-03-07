@@ -26,12 +26,14 @@ import PremiumPage from "../pages/PremiumPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import NeedHelpPage from "../pages/NeedHelpPage";
 import CareerWallPage from "../pages/CareerWallPage";
+import AboutPage from "../pages/AboutPage";
 
 function AppRoutes() {
   return (
     <Routes>
       {/* Public Landing (No Sidebar) */}
       <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="/help" element={<NeedHelpPage />} />
       <Route path="/career-wall" element={<CareerWallPage />} />
 

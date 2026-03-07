@@ -4,6 +4,7 @@ import { verifyOTP, forgotPassword } from '../../services/authService';
 import { ShieldCheck, ArrowLeft, CheckCircle } from 'lucide-react';
 import AuthInput from '../../components/auth/AuthInput';
 import AuthButton from '../../components/auth/AuthButton';
+import SEO from '../../SEO';
 
 function VerifyOTPPage() {
   const navigate = useNavigate();
@@ -63,6 +64,11 @@ function VerifyOTPPage() {
 
   return (
     <>
+      <SEO 
+        title="Verify Account | GetJobAndGo"
+        description="Verify your identity with OTP on GetJobAndGo's secure platform."
+        canonical="https://getjobandgo.com/auth/verify-otp"
+      />
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10b981]/5 border border-[#10b981]/20 mb-4">
            <ShieldCheck size={14} className="text-[#10b981]" />

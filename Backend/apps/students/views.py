@@ -52,14 +52,7 @@ class StudentViewSet(
         if random_count:
             try:
                 count = int(random_count)
-                # If student is browsing, only show verified students
-                if user.is_authenticated and user.role == UserRole.STUDENT:
-                    # Students usually shouldn't see each other unless allowed? 
-                    # But the requirement says "browse talents" for both.
-                    # Usually companies browse talents.
-                    pass
-                
-                # Default behavior for browsing: show verified
+                # For browsing: show verified
                 # Unless it's an admin
                 if not user.is_authenticated or user.role not in {UserRole.ADMIN, UserRole.SUPERADMIN}:
                     queryset = queryset.filter(verification_status="verified")
@@ -75,8 +68,10 @@ class StudentViewSet(
             return queryset
             
         if user.role == UserRole.STUDENT:
+            from django.db.models import Q
             if self.action in {"list", "retrieve"}:
-                return queryset.filter(verification_status="verified")
+                # Students see verified ones + themselves (important for their own profile page)
+                return queryset.filter(Q(verification_status="verified") | Q(user=user))
             return queryset.filter(user=user)
             
         return queryset.filter(user=user)
@@ -91,6 +86,14 @@ class StudentViewSet(
         if student.user != user and user.role not in {UserRole.ADMIN, UserRole.SUPERADMIN}:
             raise PermissionDenied("You are not allowed to update this profile.")
         serializer.save()
+
+    @action(detail=False, methods=["get"])
+    def me(self, request):
+        if not hasattr(request.user, 'student_profile'):
+             return Response({"detail": "Student profile not found"}, status=status.HTTP_404_NOT_FOUND)
+             
+        serializer = self.get_serializer(request.user.student_profile)
+        return Response(serializer.data)
 
     @action(detail=True, methods=["post"])
     def verify(self, request, id=None):

@@ -27,6 +27,7 @@ function CareerWallPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); 
+  const [sortBy, setSortBy] = useState("recent");
   const [accessDenied, setAccessDenied] = useState(false); // not verified or not logged in
 
   const [activeTab, setActiveTab] = useState("feed");
@@ -47,11 +48,22 @@ function CareerWallPage() {
     setAccessDenied(false);
     try {
       let url = "/community/thoughts/";
+      const params = new URLSearchParams();
       if (filter !== "all") {
-        url += `?role_type=${filter}`;
+        params.append("role_type", filter);
       }
-      const res = await apiClient.get(url);
-      setPosts(res.data.results || res.data);
+      
+      const res = await apiClient.get(`${url}?${params.toString()}`);
+      let fetchedPosts = res.data.results || res.data;
+      
+      // Client-side sorting as a fallback if backend doesn't support order_by
+      if (sortBy === "top") {
+        fetchedPosts = [...fetchedPosts].sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0));
+      } else {
+        fetchedPosts = [...fetchedPosts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      }
+
+      setPosts(fetchedPosts);
       setAccessDenied(false);
     } catch (err) {
       console.error(err);
@@ -67,7 +79,7 @@ function CareerWallPage() {
 
   useEffect(() => {
     fetchPosts();
-  }, [filter, user]);
+  }, [filter, sortBy, user]);
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
@@ -219,7 +231,12 @@ function CareerWallPage() {
             <div className="hidden lg:flex items-center gap-10">
               <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-widest">
                 <Link to="/" className="text-slate-400 hover:text-[#27187E] transition-colors">Home</Link>
-                <span className="text-slate-300 cursor-default select-none">About</span>
+                <Link
+                  to="/about"
+                  className="text-slate-400 hover:text-[#27187E] transition-colors"
+                >
+                  About
+                </Link>
                 <Link to="/career-wall" className="text-[#27187E]">Career Wall</Link>
                 <Link to="/2ex" className="text-slate-400 hover:text-[#27187E] transition-colors">2eX AI</Link>
                 <Link to="/jobs" className="text-slate-400 hover:text-[#27187E] transition-colors">Opportunities</Link>
@@ -252,7 +269,13 @@ function CareerWallPage() {
             <div className="lg:hidden absolute top-[72px] sm:top-[80px] md:top-[88px] inset-x-0 h-[calc(100vh-72px)] sm:h-[calc(100vh-80px)] md:h-[calc(100vh-88px)] bg-white/95 backdrop-blur-2xl flex flex-col pt-6 sm:pt-8 animate-in slide-in-from-top-4 duration-300 z-50 px-5 sm:px-6 pb-12 overflow-y-auto">
               <div className="flex flex-col gap-6 sm:gap-8 text-sm font-black uppercase tracking-widest pb-8 sm:pb-10 border-b border-slate-100">
                 <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-slate-400 flex items-center justify-between">Home <ChevronRight size={16} className="opacity-50" /></Link>
-                <span className="text-slate-300 flex items-center justify-between cursor-default select-none">About <ChevronRight size={16} className="opacity-20" /></span>
+                <Link
+                  to="/about"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
+                >
+                  About <ChevronRight size={16} className="opacity-50" />
+                </Link>
                 <Link to="/career-wall" onClick={() => setIsMenuOpen(false)} className="text-[#27187E] flex items-center justify-between">Career Wall <ChevronRight size={16} className="opacity-50" /></Link>
                 <Link to="/2ex" onClick={() => setIsMenuOpen(false)} className="text-slate-400 flex items-center justify-between">2eX AI <ChevronRight size={16} className="opacity-50" /></Link>
                 <Link to="/jobs" onClick={() => setIsMenuOpen(false)} className="text-slate-400 flex items-center justify-between">Opportunities <ChevronRight size={16} className="opacity-50" /></Link>
@@ -366,6 +389,29 @@ function CareerWallPage() {
                   </div>
                 </div>
 
+                {/* Sort Box */}
+                <div className="bg-white rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 lg:p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                  <div className="flex items-center gap-3 mb-3 sm:mb-4 lg:mb-6">
+                    <Filter className="text-primary-600 rotate-90" size={16} />
+                    <h3 className="text-xs sm:text-sm font-black uppercase tracking-widest text-slate-900">Sort By</h3>
+                  </div>
+                  
+                  <div className="flex flex-row lg:flex-col gap-2 sm:gap-3 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0">
+                    <button 
+                      onClick={() => setSortBy("recent")}
+                      className={`shrink-0 lg:w-full text-left px-4 sm:px-5 py-2.5 sm:py-3 lg:py-4 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all ${sortBy === 'recent' ? 'bg-[#27187E] text-white shadow-md' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
+                    >
+                      Most Recent
+                    </button>
+                    <button 
+                      onClick={() => setSortBy("top")}
+                      className={`shrink-0 lg:w-full text-left px-4 sm:px-5 py-2.5 sm:py-3 lg:py-4 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all ${sortBy === 'top' ? 'bg-[#27187E] text-white shadow-md' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
+                    >
+                      Top Liked
+                    </button>
+                  </div>
+                </div>
+
                 {/* Info Box — hidden on small mobile, visible on sm+ */}
                 <div className="hidden sm:block bg-primary-50 rounded-2xl sm:rounded-[2rem] p-5 sm:p-6 lg:p-8 border border-primary-100 text-center">
                   <Briefcase className="w-7 h-7 sm:w-8 sm:h-8 text-primary-600 mx-auto mb-3 sm:mb-4" />
@@ -458,7 +504,7 @@ function CareerWallPage() {
 
               {/* ═══ COMMUNITY FEED TAB ═══ */}
               {activeTab === "feed" && (
-              <div className="space-y-4 sm:space-y-5 md:space-y-6">
+              <div className="space-y-4 sm:space-y-5 md:space-y-6 max-h-[800px] overflow-y-auto pr-2 custom-scrollbar">
                 {loading ? (
                    <div className="text-center py-16 sm:py-20">
                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-[3px] sm:border-4 border-[#27187E]/20 border-t-[#27187E] animate-spin mx-auto"></div>
@@ -482,8 +528,20 @@ function CareerWallPage() {
                              {post.role_type === 'company' ? <Building2 size={20} className="sm:hidden" /> : <User size={20} className="sm:hidden" />}
                              {post.role_type === 'company' ? <Building2 size={24} className="hidden sm:block" /> : <User size={24} className="hidden sm:block" />}
                            </div>
-                           <div className="min-w-0">
-                             <h4 className="font-bold text-slate-900 text-sm sm:text-base truncate">{post.user_name || "Community Member"}</h4>
+                           <div className="min-w-0 flex flex-col">
+                             {post.profile_id ? (
+                               <Link 
+                                 to={post.role_type === 'student' ? `/students/${post.profile_id}` : `/companies/${post.profile_id}`}
+                                 className="group/name flex items-center gap-1.5"
+                               >
+                                 <h4 className="font-bold text-slate-900 text-sm sm:text-base truncate group-hover/name:text-[#27187E] transition-colors">
+                                   {post.user_name || "Community Member"}
+                                 </h4>
+                                 <ChevronRight size={14} className="text-slate-300 group-hover/name:text-[#27187E] group-hover/name:translate-x-0.5 transition-all" />
+                               </Link>
+                             ) : (
+                               <h4 className="font-bold text-slate-900 text-sm sm:text-base truncate">{post.user_name || "Community Member"}</h4>
+                             )}
                              <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 mt-0.5 sm:mt-1">
                                {post.role_type === 'student' ? 'Student' : 'Company'}
                              </p>

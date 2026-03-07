@@ -12,6 +12,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { trackJobPosting } from '../../utils/analytics';
 import { confirmAction } from '../../utils/confirmToast.jsx';
 import MyCareerWallPosts from '../../components/dashboard/MyCareerWallPosts';
+import SEO from '../../SEO';
 
 const statusConfig = {
   applied: { label: 'Applied', color: 'blue', icon: Clock },
@@ -214,7 +215,13 @@ function CompanyDashboardPage() {
   };
 
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <>
+      <SEO 
+        title="Company Dashboard | Hiring Hub | GetJobAndGo"
+        description="Manage your job postings, track candidates, and discover top talent on GetJobAndGo's hiring hub."
+        canonical="https://getjobandgo.com/company/dashboard"
+      />
+      <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
@@ -472,6 +479,7 @@ function CompanyDashboardPage() {
 
       <MyCareerWallPosts user={user} />
     </div>
+    </>
   );
 }
 

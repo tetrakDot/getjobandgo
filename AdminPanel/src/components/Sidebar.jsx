@@ -10,6 +10,8 @@ import {
   LogOut,
   Zap,
   ShieldAlert,
+  LifeBuoy,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 
@@ -64,6 +66,18 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       path: "/activities",
       icon: <ShieldAlert size={16} />,
       accent: "#f43f5e",
+    },
+    {
+      name: "Help Requests",
+      path: "/help",
+      icon: <LifeBuoy size={16} />,
+      accent: "#0ea5e9",
+    },
+    {
+      name: "Career Wall",
+      path: "/career-wall",
+      icon: <MessageSquare size={16} />,
+      accent: "#a855f7",
     },
   ];
 

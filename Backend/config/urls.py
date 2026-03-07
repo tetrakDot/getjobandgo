@@ -51,6 +51,7 @@ urlpatterns = [
     path("api/reports/dashboard/", DashboardStatsView.as_view(), name='dashboard_stats'),
     path("api/platform-stats/", PlatformStatsView.as_view(), name='platform_stats'),
     path("api/2ex/", include("apps.evaluator.urls")),
+    path("api/community/", include("apps.community.urls")),
     path("api/", include(router.urls)),
 ]
 

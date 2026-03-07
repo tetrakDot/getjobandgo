@@ -6,6 +6,7 @@ import { trackLogin } from '../../utils/analytics';
 import { ShieldCheck, Lock, ArrowRight, CheckCircle } from 'lucide-react';
 import AuthInput from '../../components/auth/AuthInput';
 import AuthButton from '../../components/auth/AuthButton';
+import SEO from '../../SEO';
 
 function StudentLoginPage() {
   const navigate = useNavigate();
@@ -47,6 +48,11 @@ function StudentLoginPage() {
 
   return (
     <>
+      <SEO 
+        title="Candidate Login | GetJobAndGo"
+        description="Login to your GetJobAndGo candidate account to manage applications and explore new opportunities."
+        canonical="https://getjobandgo.com/auth/login"
+      />
       <div className="text-center mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-3">
            <ShieldCheck size={14} className="text-[#27187E]" />

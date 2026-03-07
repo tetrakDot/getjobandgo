@@ -81,6 +81,14 @@ class CompanyViewSet(
         serializer.save()
 
     @action(detail=False, methods=["get"])
+    def me(self, request):
+        if not hasattr(request.user, 'company_profile'):
+             return Response({"detail": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
+             
+        serializer = self.get_serializer(request.user.company_profile)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["get"])
     def pending(self, request):
         queryset = self.get_queryset().filter(verification_status=CompanyVerificationStatus.PENDING)
         page = self.paginate_queryset(queryset)

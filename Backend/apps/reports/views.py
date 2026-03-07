@@ -86,11 +86,14 @@ from .serializers import HelpRequestSerializer
 
 class HelpRequestViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for submitting Help Requests.
-    Only allows logged-in users to POST a new request.
+    ViewSet for Help Requests.
+    Users can POST. Admins can do everything.
     """
     queryset = HelpRequest.objects.all()
     serializer_class = HelpRequestSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    http_method_names = ['post']
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [permissions.IsAuthenticated()]
+        return [permissions.IsAuthenticated(), IsAdmin()]
 

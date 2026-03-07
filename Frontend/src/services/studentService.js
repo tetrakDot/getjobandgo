@@ -5,6 +5,11 @@ export async function listStudents(params) {
   return data;
 }
 
+export async function getStudentProfile() {
+  const { data } = await apiClient.get('/students/me/');
+  return data;
+}
+
 export async function getStudent(id) {
   const { data } = await apiClient.get(`/students/${id}/`);
   return data;

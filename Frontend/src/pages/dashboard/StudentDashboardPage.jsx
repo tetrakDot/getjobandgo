@@ -4,6 +4,7 @@ import { Loader2, Briefcase, CheckCircle2, Clock, XCircle, Search, ArrowRight, B
 import { listMyApplications, getApplicationStats } from '../../services/applicationService';
 import { useAuth } from '../../hooks/useAuth';
 import MyCareerWallPosts from '../../components/dashboard/MyCareerWallPosts';
+import SEO from '../../SEO';
 
 const statusMap = {
   applied: { label: 'Applied', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100', icon: Clock },
@@ -127,7 +128,13 @@ function StudentDashboardPage() {
   }
 
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <>
+      <SEO 
+        title="Student Dashboard | GetJobAndGo"
+        description="Track your job applications, explore opportunities, and manage your career journey on GetJobAndGo."
+        canonical="https://getjobandgo.com/student/dashboard"
+      />
+      <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-serif font-bold text-slate-900 tracking-tight">Your Career Journey</h1>
@@ -225,6 +232,7 @@ function StudentDashboardPage() {
 
       <MyCareerWallPosts user={user} />
     </div>
+    </>
   );
 }
 

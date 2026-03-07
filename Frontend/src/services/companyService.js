@@ -5,6 +5,11 @@ export async function listCompanies(params) {
   return data;
 }
 
+export async function getCompanyProfile() {
+  const { data } = await apiClient.get('/companies/me/');
+  return data;
+}
+
 export async function getCompany(id) {
   const { data } = await apiClient.get(`/companies/${id}/`);
   return data;

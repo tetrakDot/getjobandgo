@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listCompanies } from '../../services/companyService';
-import { Search, Loader2, Building2, CheckCircle2, MapPin, Globe, ExternalLink, Sparkles, X } from 'lucide-react';
+import { Search, Loader2, Building2, MapPin, Globe, Layout, CheckCircle2, X, ArrowUpDown, Sparkles } from 'lucide-react';
+import SEO from '../../SEO';
 
 function CompanyCard({ company, isFeatured }) {
   return (
@@ -53,7 +54,7 @@ function CompanyCard({ company, isFeatured }) {
               </div>
             )}
             <div className="ml-auto text-primary-600 font-black tracking-widest uppercase text-[10px] group-hover:translate-x-1 transition-transform flex items-center gap-1.5">
-              Explore <ExternalLink size={12} />
+              Explore <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
             </div>
           </div>
         </div>
@@ -106,7 +107,13 @@ function CompaniesListPage() {
   const filteredCompanies = companies;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <>
+      <SEO 
+        title="Partner Network | Verified Companies | GetJobAndGo"
+        description="Explore our curated network of verified hiring partners. Professional software companies and startups hiring on GetJobAndGo."
+        canonical="https://getjobandgo.com/companies"
+      />
+      <div className="space-y-8 animate-in fade-in duration-500">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-2 border-b border-slate-200">
         <div>
@@ -227,6 +234,7 @@ function CompaniesListPage() {
         </div>
       )}
     </div>
+    </>
   );
 }
 

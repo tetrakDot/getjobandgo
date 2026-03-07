@@ -5,6 +5,7 @@ import { trackRegistration } from '../../utils/analytics';
 import { Briefcase, Building2, ArrowRight, ShieldCheck, FileText, Upload, CheckCircle, MapPin, Hash } from 'lucide-react';
 import AuthInput from '../../components/auth/AuthInput';
 import AuthButton from '../../components/auth/AuthButton';
+import SEO from '../../SEO';
 
 function CompanyRegisterPage() {
   const navigate = useNavigate();
@@ -109,7 +110,13 @@ function CompanyRegisterPage() {
   );
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-[850px]">
+    <>
+      <SEO 
+        title="Organization Onboarding | GetJobAndGo"
+        description="Register your organization on GetJobAndGo to access our verified talent network and scale your hiring."
+        canonical="https://getjobandgo.com/auth/company/register"
+      />
+      <div className="flex flex-col lg:flex-row min-h-[850px]">
       {/* Brand Sidebar */}
       <div className="lg:w-[320px] bg-[#27187E] p-10 flex flex-col justify-between relative overflow-hidden text-white shrink-0">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
@@ -253,6 +260,7 @@ function CompanyRegisterPage() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

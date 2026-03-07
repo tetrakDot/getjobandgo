@@ -72,9 +72,12 @@ function HomePage() {
                 <Link to="/" className="text-[#27187E]">
                   Home
                 </Link>
-                <span className="text-slate-300 cursor-default select-none">
+                <Link
+                  to="/about"
+                  className="text-slate-400 hover:text-[#27187E] transition-colors"
+                >
                   About
-                </span>
+                </Link>
                 <Link
                   to="/career-wall"
                   className="text-slate-400 hover:text-[#27187E] transition-colors"
@@ -151,9 +154,13 @@ function HomePage() {
                 >
                   Home <ChevronRight size={16} className="opacity-50" />
                 </Link>
-                <span className="text-slate-300 flex items-center justify-between cursor-default select-none">
-                  About <ChevronRight size={16} className="opacity-20" />
-                </span>
+                <Link
+                  to="/about"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-slate-400 hover:text-[#27187E] flex items-center justify-between transition-colors"
+                >
+                  About <ChevronRight size={16} className="opacity-50" />
+                </Link>
                 <Link
                   to="/career-wall"
                   onClick={() => setIsMenuOpen(false)}
@@ -234,6 +241,46 @@ function HomePage() {
             <div className="absolute top-[10%] left-[20%] w-[600px] h-[600px] bg-primary-400/5 rounded-full mix-blend-multiply filter blur-[100px] animate-[pulse_10s_ease-in-out_infinite]" />
             <div className="absolute top-[40%] right-[10%] w-[500px] h-[500px] bg-[#27187E] opacity-[0.03] rounded-full mix-blend-multiply filter blur-[120px] animate-[pulse_15s_ease-in-out_infinite_reverse]" />
           </div>
+
+          {/* Massive UI Launch Banner */}
+          <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-white border-b border-slate-100">
+            {/* Background elements */}
+            <div className="absolute top-0 inset-x-0 h-full pointer-events-none -y-axis-12 z-0">
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-full bg-gradient-to-b from-primary-50/20 via-white to-transparent opacity-50 blur-3xl"></div>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+              <div className="flex flex-col items-center">
+                 {/* Decorative Launch Tag */}
+                <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-primary-100/30 border border-primary-200/50 mb-10 animate-in fade-in slide-in-from-bottom-6 duration-700">
+                  <div className="relative">
+                     <div className="w-2.5 h-2.5 rounded-full bg-[#27187E] animate-ping opacity-75"></div>
+                     <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#27187E]"></div>
+                  </div>
+                  <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#27187E]">
+                    Pre-Launch Phase
+                  </span>
+                </div>
+
+                <h2 className="text-center text-5xl sm:text-7xl md:text-[100px] font-serif font-black leading-[0.9] tracking-tighter text-[#27187E] mb-12 max-w-5xl balance animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+                  "Something Better <br className="hidden md:block" /> for Job Seekers <br className="hidden md:block" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#27187E] via-primary-500 to-[#27187E] italic animate-gradient-x bg-[length:200%_100%] pr-4 uppercase">
+                     is Coming."
+                  </span>
+                </h2>
+
+                <div className="h-0.5 w-32 bg-gradient-to-r from-transparent via-[#27187E]/20 to-transparent mb-12 animate-in fade-in duration-1000 delay-500"></div>
+
+                <p className="text-2xl md:text-4xl font-serif font-bold text-slate-400 italic tracking-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-700 text-center">
+                  GetJobAndGo is preparing to launch.
+                </p>
+              </div>
+            </div>
+
+            {/* Floaties */}
+             <div className="absolute left-[-5%] top-[20%] w-96 h-96 bg-primary-200/10 rounded-full blur-[100px] animate-pulse"></div>
+             <div className="absolute right-[-5%] bottom-[10%] w-[500px] h-[500px] bg-[#27187E]/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+          </section>
 
           {/* Modern Minimalistic Inspirational Tamil Quote Section */}
           <section className="bg-white/40 backdrop-blur-md border-b border-slate-100 relative overflow-hidden">

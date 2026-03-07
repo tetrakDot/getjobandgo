@@ -4,6 +4,7 @@ import { forgotPassword } from '../../services/authService';
 import { KeyRound, ArrowLeft, Send } from 'lucide-react';
 import AuthInput from '../../components/auth/AuthInput';
 import AuthButton from '../../components/auth/AuthButton';
+import SEO from '../../SEO';
 
 function ForgotPasswordPage() {
   const navigate = useNavigate();
@@ -42,6 +43,11 @@ function ForgotPasswordPage() {
 
   return (
     <>
+      <SEO 
+        title="Forgot Password | GetJobAndGo"
+        description="Recover your account password on GetJobAndGo's talent network."
+        canonical="https://getjobandgo.com/auth/forgot-password"
+      />
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-4">
            <KeyRound size={14} className="text-[#27187E]" />

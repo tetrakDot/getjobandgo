@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listStudents } from '../../services/studentService';
 import { Search, Loader2, CheckCircle2, User, MapPin, GraduationCap, Briefcase, Sparkles, X, ArrowUpDown } from 'lucide-react';
+import SEO from '../../SEO';
 
 function StudentCard({ student, isFeatured }) {
   const skills = student.skills ? student.skills.split(',').map(s => s.trim()) : [];
@@ -120,7 +121,13 @@ function StudentsListPage() {
   const filteredStudents = students;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <>
+      <SEO 
+        title="Talent Pool | Verified Students | GetJobAndGo"
+        description="Connect with the next generation of engineers and developers. Search and find verified talent on GetJobAndGo's student network."
+        canonical="https://getjobandgo.com/students"
+      />
+      <div className="space-y-8 animate-in fade-in duration-500">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-2 border-b border-slate-200">
         <div>
@@ -255,6 +262,7 @@ function StudentsListPage() {
         </div>
       )}
     </div>
+    </>
   );
 }
 

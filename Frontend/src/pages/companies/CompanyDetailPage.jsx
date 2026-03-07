@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getCompany } from '../../services/companyService';
 import { listJobs } from '../../services/jobService';
-import { Loader2, ArrowLeft, Briefcase, MapPin, Globe, Building2, CheckCircle2, Info, Users, ExternalLink } from 'lucide-react';
+import { Loader2, ArrowLeft, Briefcase, MapPin, Globe, Building2, CheckCircle2, Info, Users, ExternalLink, Mail, Layout, Clock, Search } from 'lucide-react';
+import SEO from '../../SEO';
 import { useAuth } from '../../hooks/useAuth';
 
 function CompanyDetailPage() {
@@ -49,7 +50,26 @@ function CompanyDetailPage() {
   const activeJobs = jobs.filter(j => j.is_active);
 
   return (
-    <div className="max-w-5xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <>
+      <SEO 
+        title={`${company.company_name} | Hiring on GetJobAndGo`}
+        description={`Explore career opportunities at ${company.company_name}. View company profile, mission, and active job openings on GetJobAndGo.`}
+        canonical={`https://getjobandgo.com/companies/${id}`}
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": company.company_name,
+          "description": company.company_description,
+          "url": company.website,
+          "address": {
+             "@type": "PostalAddress",
+             "addressLocality": company.district,
+             "addressRegion": company.state,
+             "addressCountry": "India"
+          }
+        }}
+      />
+      <div className="max-w-5xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <Link to="/companies" className="group inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-primary-600 transition-colors">
         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> 
         Back to Partners
@@ -207,6 +227,7 @@ function CompanyDetailPage() {
         </div>
       </div>
     </div>
+  </>
   );
 }
 

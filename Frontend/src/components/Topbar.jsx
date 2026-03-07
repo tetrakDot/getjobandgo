@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { User, LogOut, ShieldCheck, Globe, Menu } from 'lucide-react';
+import { User, LogOut, ShieldCheck, Globe, Menu, HelpCircle } from 'lucide-react';
 
 function Topbar({ onMenuClick }) {
   const { user, logout } = useAuth();
@@ -38,6 +38,15 @@ function Topbar({ onMenuClick }) {
         </div>
         
         <div className="flex items-center gap-6">
+          <Link
+            to="/help"
+            className="p-2.5 text-slate-400 hover:text-primary-500 hover:bg-primary-50 rounded-xl transition-all group relative"
+            title="Need Help?"
+          >
+            <HelpCircle size={20} />
+            <span className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
+          </Link>
+
           {!user ? (
             <div className="flex items-center gap-3">
               <Link
