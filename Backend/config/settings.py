@@ -28,13 +28,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-fxfd=m@y6f07w&u*(v&
 # DEBUG = _env_bool("DJANGO_DEBUG", False)
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "148.230.66.158",      # your server IP
-    "api.getjobandgo.com",  # your domain
-    "localhost",
-    "127.0.0.1",
-]
-
+ALLOWED_HOSTS: list[str] = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
