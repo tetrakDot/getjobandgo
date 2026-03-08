@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   Compass,
   Rocket,
-  Lightbulb
+  Lightbulb,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import SEO from "../SEO";
@@ -246,7 +246,9 @@ function AboutPage() {
             </h1>
 
             <p className="text-lg md:text-2xl text-slate-500 font-medium max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-              GetJobAndGo is a trusted career platform designed to connect high-potential students with verified companies for internships and early career opportunities.
+              GetJobAndGo is a trusted career platform designed to connect
+              high-potential students with verified companies for internships
+              and early career opportunities.
             </p>
           </section>
 
@@ -258,7 +260,9 @@ function AboutPage() {
                   Why we built <br /> GetJobAndGo
                 </h2>
                 <p className="text-slate-500 text-lg leading-relaxed mb-6 font-medium">
-                  Many students today use platforms like LinkedIn and Naukri.com. While these platforms provide opportunities, they often include:
+                  Many students today use platforms like LinkedIn and
+                  Naukri.com. While these platforms provide opportunities, they
+                  often include:
                 </p>
                 <ul className="space-y-4 mb-8">
                   {[
@@ -269,7 +273,11 @@ function AboutPage() {
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-4">
                       <div className="w-6 h-6 rounded-full bg-rose-50 flex items-center justify-center shrink-0 mt-0.5">
-                        <X size={14} className="text-rose-500" strokeWidth={3} />
+                        <X
+                          size={14}
+                          className="text-rose-500"
+                          strokeWidth={3}
+                        />
                       </div>
                       <span className="text-slate-700 font-medium">{item}</span>
                     </li>
@@ -277,7 +285,9 @@ function AboutPage() {
                 </ul>
                 <div className="p-8 bg-[#FAFAFC] border border-slate-100 rounded-3xl">
                   <p className="text-[#27187E] font-black text-xl italic leading-relaxed">
-                    Because of this experience, the idea for GetJobAndGo was born. The goal was to create a focused and trustworthy platform.
+                    Because of this experience, the idea for GetJobAndGo was
+                    born. The goal was to create a focused and trustworthy
+                    platform.
                   </p>
                 </div>
               </div>
@@ -285,16 +295,22 @@ function AboutPage() {
               <div className="grid gap-6">
                 <div className="bg-[#27187E] p-10 rounded-[2.5rem] text-white shadow-2xl shadow-[#27187E]/20 transform md:translate-x-4">
                   <ShieldCheck className="w-12 h-12 text-primary-300 mb-6" />
-                  <h3 className="text-2xl font-black mb-3">Verified Opportunities</h3>
+                  <h3 className="text-2xl font-black mb-3">
+                    Verified Opportunities
+                  </h3>
                   <p className="text-primary-100 leading-relaxed font-medium">
-                    Only verified organizations and companies can post roles, completely eliminating fake job postings.
+                    Only verified organizations and companies can post roles,
+                    completely eliminating fake job postings.
                   </p>
                 </div>
                 <div className="bg-primary-50 p-10 rounded-[2.5rem] border border-primary-100 transform md:-translate-x-4">
                   <Target className="w-12 h-12 text-primary-600 mb-6" />
-                  <h3 className="text-2xl font-black text-[#27187E] mb-3">Relevant Applications</h3>
+                  <h3 className="text-2xl font-black text-[#27187E] mb-3">
+                    Relevant Applications
+                  </h3>
                   <p className="text-[#27187E]/70 leading-relaxed font-medium">
-                    Students can directly apply to relevant roles, while the hiring process remains simple, swift, and transparent.
+                    Students can directly apply to relevant roles, while the
+                    hiring process remains simple, swift, and transparent.
                   </p>
                 </div>
               </div>
@@ -310,7 +326,8 @@ function AboutPage() {
                   Our Vision
                 </h3>
                 <h4 className="text-3xl md:text-4xl font-serif font-black text-slate-900 leading-[1.3] mb-6 tracking-tight">
-                  To build a trusted hiring ecosystem where talented students connect with genuine organizations without unnecessary noise.
+                  To build a trusted hiring ecosystem where talented students
+                  connect with genuine organizations without unnecessary noise.
                 </h4>
               </div>
 
@@ -328,9 +345,15 @@ function AboutPage() {
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-4 text-white">
                       <div className="w-6 h-6 rounded-full bg-primary-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                        <CheckCircle2 size={16} className="text-primary-200" strokeWidth={2.5} />
+                        <CheckCircle2
+                          size={16}
+                          className="text-primary-200"
+                          strokeWidth={2.5}
+                        />
                       </div>
-                      <span className="text-lg font-medium tracking-wide">{item}</span>
+                      <span className="text-lg font-medium tracking-wide">
+                        {item}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -339,7 +362,7 @@ function AboutPage() {
           </section>
 
           {/* Founder Section */}
-          {/* <section className="py-32 bg-white relative overflow-hidden">
+          <section className="py-32 bg-white relative overflow-hidden">
             <div className="absolute top-1/2 left-0 w-full h-full bg-slate-50 -skew-y-3 origin-top-left -z-10" />
 
             <div className="max-w-6xl mx-auto px-6 md:px-12 grid md:grid-cols-2 gap-16 items-center">
@@ -370,20 +393,32 @@ function AboutPage() {
                   <h2 className="text-4xl md:text-6xl font-serif font-black text-slate-900 mb-2">
                     Sailendra Prasath N
                   </h2>
-                  <p className="text-[12px] font-black uppercase tracking-[0.3em] text-[#27187E]">
+                  {/* <p className="text-[12px] font-black uppercase tracking-[0.3em] text-[#27187E]">
                     Founder, GetJobAndGo
-                  </p>
+                  </p> */}
                 </div>
 
                 <div className="space-y-6 text-slate-500 text-lg leading-relaxed font-medium">
                   <p>
-                    Sailendra Prasath N is a student entrepreneur passionate about building technology that simplifies career opportunities for students.
+                    Sailendra Prasath N passionate about building technology
+                    that simplifies career opportunities for students.
+                  </p>
+                  {/* <p>
+                    Sailendra Prasath N is a student entrepreneur passionate
+                    about building technology that simplifies career
+                    opportunities for students.
+                  </p> */}
+                  <p>
+                    While exploring job platforms during his college journey, he
+                    noticed the challenges students face when navigating large
+                    job portals. This inspired him to create GetJobAndGo, a
+                    platform designed to focus on trust, verification, and
+                    meaningful career connections.
                   </p>
                   <p>
-                    While exploring job platforms during his college journey, he noticed the challenges students face when navigating large job portals. This inspired him to create GetJobAndGo, a platform designed to focus on trust, verification, and meaningful career connections.
-                  </p>
-                  <p>
-                    His goal is to build a platform where students can find the right opportunity and confidently move to the next chapter of their careers.
+                    His goal is to build a platform where students can find the
+                    right opportunity and confidently move to the next chapter
+                    of their careers.
                   </p>
                 </div>
 
@@ -397,7 +432,7 @@ function AboutPage() {
                 </a>
               </div>
             </div>
-          </section> */}
+          </section>
 
           {/* Philosophy Section */}
           <section className="py-32 bg-[#27187E] text-center relative overflow-hidden">
@@ -413,7 +448,8 @@ function AboutPage() {
               </h2>
               <div className="space-y-6 text-primary-100 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
                 <p>
-                  GetJobAndGo believes that the right opportunity at the right time can change a student's future.
+                  GetJobAndGo believes that the right opportunity at the right
+                  time can change a student's future.
                 </p>
                 <p>The platform exists to help students:</p>
               </div>
