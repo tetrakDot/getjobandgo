@@ -1,9 +1,12 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load .env file
+load_dotenv(BASE_DIR / ".env")
 # Load .env manually if python-dotenv is not installed
 env_file = BASE_DIR / ".env"
 if env_file.exists():
